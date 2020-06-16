@@ -45,8 +45,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         String title = news.getTitle();
         String description = news.getDescryption();
         String imgurl = news.getImgurl();
+        String date = news.getDate();
         holder.titletext.setText(title);
-        holder.description.setText(String.valueOf(description));
+        holder.description.setText(description);
+        holder.date.setText(date);
         Picasso.get().load(imgurl).into(holder.imgview);
 
     }
@@ -61,13 +63,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     public class NewsViewHolder extends RecyclerView.ViewHolder {
-        TextView titletext, description;
+        TextView titletext, description,date;
         ImageView imgview;
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             imgview = itemView.findViewById(R.id.img_iv);
             titletext = itemView.findViewById(R.id.title_tv);
             description = itemView.findViewById(R.id.discryption_tv);
+            date = itemView.findViewById(R.id.date_tv);
         }
     }
 }

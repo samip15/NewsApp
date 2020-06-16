@@ -12,10 +12,11 @@ import java.util.List;
 public class OpenJsonNews {
     public static List<NewsItem> getWeatherDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
         final String NEWS_MESSAGE_CODE = "status";
-        final String OWM_DESCRYPTION = "description";
-        final String OWM_TITLE = "title";
-        final String OWM_IMAGEURL = "urlToImage";
-        final String OWM_ARTICLE = "articles";
+        final String NEWS_DESCRIPTION = "description";
+        final String NEWS_DATE = "description";
+        final String NEWS_TITLE = "title";
+        final String NEWS_IMAGE_URL = "urlToImage";
+        final String NEWS_ARTICLE = "articles";
 
         List<NewsItem> arrmodel = new ArrayList<>();
 
@@ -35,7 +36,7 @@ public class OpenJsonNews {
             }
         }
 
-        JSONArray NewsArray = jsonObject.getJSONArray(OWM_ARTICLE);
+        JSONArray NewsArray = jsonObject.getJSONArray(NEWS_ARTICLE);
         parsedNewsData = new String[NewsArray.length()];
         for (int i = 0; i < NewsArray.length(); i++) {
             String title;
@@ -45,27 +46,33 @@ public class OpenJsonNews {
             JSONObject newsobj = NewsArray.getJSONObject(i);
 
             String originalTitle = null;
-            if (newsobj.has(OWM_TITLE)) {
+            if (newsobj.has(NEWS_TITLE)) {
                 // Extract the value for the key called "original_title"
-                originalTitle = newsobj.getString(OWM_TITLE);
+                originalTitle = newsobj.getString(NEWS_TITLE);
             }
 
 
             String originalDes = null;
-            if (newsobj.has(OWM_DESCRYPTION)) {
+            if (newsobj.has(NEWS_DESCRIPTION)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(OWM_DESCRYPTION);
+                originalTitle = newsobj.getString(NEWS_DESCRIPTION);
+            }
+
+            String originalDate = null;
+            if (newsobj.has(NEWS_DESCRIPTION)) {
+                // Extract the value for the key called "original_description"
+                originalTitle = newsobj.getString(NEWS_DESCRIPTION);
             }
 
             String imgurl = null;
-            if (newsobj.has(OWM_IMAGEURL)) {
+            if (newsobj.has(NEWS_IMAGE_URL)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(OWM_IMAGEURL);
+                originalTitle = newsobj.getString(NEWS_IMAGE_URL);
             }
 
 
             // Create a new {@link Movie} object
-            NewsItem news = new NewsItem(originalTitle,originalDes,imgurl);
+            NewsItem news = new NewsItem(originalTitle,originalDes,imgurl,originalDate);
             // Add the new {@link Movie} to the list of movies
             arrmodel.add(news);
 

@@ -4,11 +4,13 @@ public class NewsItem {
     String title;
     String descryption;
     String imgurl;
+    String date;
 
-    public NewsItem(String title, String descryption, String imgurl) {
+    public NewsItem(String title, String descryption, String imgurl,String date) {
         this.title = title;
         this.descryption = descryption;
         this.imgurl = imgurl;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -33,5 +35,13 @@ public class NewsItem {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getDate() {
+        return title;
+    }
+
+    public void setDate(String title) {
+        this.title = title;
     }
 }
