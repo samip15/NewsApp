@@ -23,6 +23,14 @@ android {
 }
 
 dependencies {
+    //skinip kit progress bar
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    //picscoo dependency
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //recycler view dependency
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // card view dependency
+    implementation "androidx.cardview:cardview:1.0.0"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
