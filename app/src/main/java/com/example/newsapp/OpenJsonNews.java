@@ -54,24 +54,24 @@ public class OpenJsonNews {
             String originalDes = null;
             if (newsobj.has(NEWS_DESCRIPTION)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(NEWS_DESCRIPTION);
+                originalDes = newsobj.getString(NEWS_DESCRIPTION);
             }
 
             String originalDate = null;
             if (newsobj.has(NEWS_DATE)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(NEWS_DATE);
+                originalDate = newsobj.getString(NEWS_DATE);
             }
 
-            String imgurl = null;
+            String Imgurl = null;
             if (newsobj.has(NEWS_IMAGE_URL)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(NEWS_IMAGE_URL);
+                Imgurl = newsobj.getString(NEWS_IMAGE_URL);
             }
 
 
             // Create a new {@link Movie} object
-            NewsItem news = new NewsItem(originalTitle,originalDes,imgurl,originalDate);
+            NewsItem news = new NewsItem(originalTitle,originalDes,Imgurl,originalDate);
             // Add the new {@link Movie} to the list of movies
             arrmodel.add(news);
 
