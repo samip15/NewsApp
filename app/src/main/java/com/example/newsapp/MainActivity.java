@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mErrorMessageDisplay = findViewById(R.id.tv_error_message);
         mLoadingindicator = findViewById(R.id.loading_indicator);
         //set rv
-        LinearLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mrecycler.setLayoutManager(gridLayoutManager);
         mrecycler.setHasFixedSize(true);
         List<NewsItem> news = new ArrayList<>();

@@ -13,15 +13,14 @@ public class OpenJsonNews {
     public static List<NewsItem> getWeatherDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
         final String NEWS_MESSAGE_CODE = "status";
         final String NEWS_DESCRIPTION = "description";
-        final String NEWS_DATE = "description";
+        final String NEWS_DATE = "publishedAt";
         final String NEWS_TITLE = "title";
         final String NEWS_IMAGE_URL = "urlToImage";
         final String NEWS_ARTICLE = "articles";
 
         List<NewsItem> arrmodel = new ArrayList<>();
-
         String[] parsedNewsData = null;
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject(jsonNewsResponse);
         if (jsonObject.has(NEWS_MESSAGE_CODE)) {
             String errorcode = jsonObject.getString(NEWS_MESSAGE_CODE);
             switch (errorcode) {
@@ -59,9 +58,9 @@ public class OpenJsonNews {
             }
 
             String originalDate = null;
-            if (newsobj.has(NEWS_DESCRIPTION)) {
+            if (newsobj.has(NEWS_DATE)) {
                 // Extract the value for the key called "original_description"
-                originalTitle = newsobj.getString(NEWS_DESCRIPTION);
+                originalTitle = newsobj.getString(NEWS_DATE);
             }
 
             String imgurl = null;
