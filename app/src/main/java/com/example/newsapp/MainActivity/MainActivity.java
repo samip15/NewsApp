@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.MainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,9 +13,18 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.newsapp.LocationPrefrences.LocationPrefrences;
+import com.example.newsapp.NetworkUtils.NetworkUtils;
+import com.example.newsapp.NewsAdapter.NewsAdapter;
+import com.example.newsapp.NewsItems.NewsItem;
+import com.example.newsapp.NewsJson.OpenJsonNews;
+import com.example.newsapp.R;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONException;
@@ -28,34 +36,31 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
-    RecyclerView mrecycler;
+    RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
-    Context ctx = MainActivity.this;
     private TextView mErrorMessageDisplay;
     private static final int NEWS_LOADER_ID = 0;
-    private SpinKitView mLoadingindicator;
-    Context mcontext = MainActivity.this;
-
+    private SpinKitView mLoadingIndicator;
+    Context mContext = MainActivity.this;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mrecycler = findViewById(R.id.recycler_view);
+        mRecycler = findViewById(R.id.recycler_view);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message);
-        mLoadingindicator = findViewById(R.id.loading_indicator);
+        mLoadingIndicator = findViewById(R.id.loading_indicator);
         //set rv
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        mrecycler.setLayoutManager(gridLayoutManager);
-        mrecycler.setHasFixedSize(true);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        mRecycler.setLayoutManager(linearLayout);
+        mRecycler.setHasFixedSize(true);
         List<NewsItem> news = new ArrayList<>();
         //adapter
         myNewsAdapter = new NewsAdapter(news);
-        mrecycler.setAdapter(myNewsAdapter);
-
-        //initilizing the loader
+        mRecycler.setAdapter(myNewsAdapter);
         getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
+
     }
 
     /*
@@ -65,12 +70,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void showNewsDataView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mrecycler.setVisibility(View.VISIBLE);
+        mRecycler.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
-        mrecycler.setVisibility(View.INVISIBLE);
+        mRecycler.setVisibility(View.INVISIBLE);
     }
 
     @NonNull
@@ -86,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (mNewsData != null) {
                     deliverResult(mNewsData);
                 }
-                mLoadingindicator.setVisibility(View.VISIBLE);
+                mLoadingIndicator.setVisibility(View.VISIBLE);
                 // triggers the load in background function to load data
                 forceLoad();
             }
@@ -94,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Nullable
             @Override
             public List<NewsItem> loadInBackground() {
-                String location = LocationPrefrences.getPreferedWeatherLocation(mcontext);
+                String location = LocationPrefrences.getPreferedWeatherLocation(mContext);
                 URL newsRequestUrl = NetworkUtils.buildUrl(location);
                 List<NewsItem> newsDataFromJson = null;
                 try {
                     String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                    newsDataFromJson = OpenJsonNews.getWeatherDataFromJson(MainActivity.this,jsonNewsResponse);
+                    newsDataFromJson = OpenJsonNews.getWeatherDataFromJson(MainActivity.this, jsonNewsResponse);
                     return newsDataFromJson;
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void deliverResult(@Nullable List<NewsItem> data) {
-                mNewsData=data;
+                mNewsData = data;
                 super.deliverResult(data);
             }
         };
@@ -122,13 +127,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(@NonNull Loader<List<NewsItem>> loader, List<NewsItem> data) {
 
-        mLoadingindicator.setVisibility(View.INVISIBLE);
-        myNewsAdapter.clearAll();
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
 
         // Add the movie data
         if (data != null && !data.isEmpty()) {
             showNewsDataView();
-            myNewsAdapter.addAll(data);
+            myNewsAdapter.setNewsData(data);
+        } else {
+            showErrorMessage();
         }
 
         if (!isOnline()) {
@@ -149,7 +155,38 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void showOfflineMessage() {
-        mrecycler.setVisibility(View.INVISIBLE);
+        mRecycler.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+
+    //------------------------Menu items---------------------
+
+    private void invilidateNewsData() {
+        myNewsAdapter.setNewsData(null);
+    }
+
+    /**
+     * This Is Created Menu
+     *
+     * @param menu
+     * @return
+     */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refreshnews, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            invilidateNewsData();
+            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

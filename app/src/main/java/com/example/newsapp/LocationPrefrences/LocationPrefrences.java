@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.LocationPrefrences;
 
 import android.content.Context;
 

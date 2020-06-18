@@ -4,4 +4,6 @@
     <string name="title_des">Description</string>
     <string name="title_date">Date</string>
     <string name="error_message">Cannot Connect Please Check Your Internet Connection</string>
+    <string name="refresh_menue">Refresh</string>
+    <string name="action_share">Share</string>
 </resources>

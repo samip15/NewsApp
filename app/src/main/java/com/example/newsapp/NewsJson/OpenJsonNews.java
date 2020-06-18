@@ -1,6 +1,8 @@
-package com.example.newsapp;
+package com.example.newsapp.NewsJson;
 
 import android.content.Context;
+
+import com.example.newsapp.NewsItems.NewsItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,12 +20,11 @@ public class OpenJsonNews {
         final String NEWS_IMAGE_URL = "urlToImage";
         final String NEWS_ARTICLE = "articles";
 
-        List<NewsItem> arrmodel = new ArrayList<>();
-        String[] parsedNewsData = null;
+        List<NewsItem> listItemArrayList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(jsonNewsResponse);
         if (jsonObject.has(NEWS_MESSAGE_CODE)) {
-            String errorcode = jsonObject.getString(NEWS_MESSAGE_CODE);
-            switch (errorcode) {
+            String errorCode = jsonObject.getString(NEWS_MESSAGE_CODE);
+            switch (errorCode) {
                 case "ok":
                     break;
                 case "error":
@@ -36,11 +37,7 @@ public class OpenJsonNews {
         }
 
         JSONArray NewsArray = jsonObject.getJSONArray(NEWS_ARTICLE);
-        parsedNewsData = new String[NewsArray.length()];
         for (int i = 0; i < NewsArray.length(); i++) {
-            String title;
-            String description;
-            String imageurl;
 
             JSONObject newsobj = NewsArray.getJSONObject(i);
 
@@ -59,26 +56,26 @@ public class OpenJsonNews {
 
             String originalDate = null;
             if (newsobj.has(NEWS_DATE)) {
-                // Extract the value for the key called "original_description"
+                // Extract the value for the key called "original_date"
                 originalDate = newsobj.getString(NEWS_DATE);
             }
 
             String Imgurl = null;
             if (newsobj.has(NEWS_IMAGE_URL)) {
-                // Extract the value for the key called "original_description"
+                // Extract the value for the key called "original_image url"
                 Imgurl = newsobj.getString(NEWS_IMAGE_URL);
             }
 
 
-            // Create a new {@link Movie} object
+            // Create a new {@link News} object
             NewsItem news = new NewsItem(originalTitle,originalDes,Imgurl,originalDate);
-            // Add the new {@link Movie} to the list of movies
-            arrmodel.add(news);
+            // Add the new {@link News} to the list of News
+            listItemArrayList.add(news);
 
         }
 
 
-        return  arrmodel;
+        return  listItemArrayList;
 
 
     }
