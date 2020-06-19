@@ -1,8 +1,8 @@
-package com.example.newsapp.NewsJson;
+package com.example.newsapp.Json;
 
 import android.content.Context;
 
-import com.example.newsapp.NewsItems.NewsItem;
+import com.example.newsapp.Items.NewsItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

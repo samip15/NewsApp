@@ -1,4 +1,4 @@
-package com.example.newsapp.NewsItems;
+package com.example.newsapp.Items;
 
 import android.os.Parcel;
 import android.os.Parcelable;

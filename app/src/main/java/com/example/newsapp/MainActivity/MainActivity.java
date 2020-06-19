@@ -14,21 +14,19 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.newsapp.DetailActivity.DetailActivity;
-import com.example.newsapp.LocationPrefrences.LocationPrefrences;
-import com.example.newsapp.NetworkUtils.NetworkUtils;
-import com.example.newsapp.NewsAdapter.NewsAdapter;
-import com.example.newsapp.NewsItems.NewsItem;
-import com.example.newsapp.NewsJson.OpenJsonNews;
+import com.example.newsapp.Detail.DetailActivity;
+import com.example.newsapp.Prefrences.LocationPrefrences;
+import com.example.newsapp.Network.NetworkUtils;
+import com.example.newsapp.Adapter.NewsAdapter;
+import com.example.newsapp.Items.NewsItem;
+import com.example.newsapp.Json.OpenJsonNews;
 import com.example.newsapp.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONException;
 

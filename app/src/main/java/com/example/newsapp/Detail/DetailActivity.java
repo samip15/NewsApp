@@ -1,4 +1,4 @@
-package com.example.newsapp.DetailActivity;
+package com.example.newsapp.Detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.newsapp.NewsItems.NewsItem;
+import com.example.newsapp.Items.NewsItem;
 import com.example.newsapp.R;
 import com.squareup.picasso.Picasso;
 
