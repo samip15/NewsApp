@@ -1,6 +1,9 @@
 package com.example.newsapp.NewsItems;
 
-public class NewsItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsItem implements Parcelable {
     String title;
     String description;
     String imgUrl;
@@ -12,6 +15,25 @@ public class NewsItem {
         this.imgUrl = imgUrl;
         this.date = date;
     }
+
+    protected NewsItem(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        imgUrl = in.readString();
+        date = in.readString();
+    }
+
+    public static final Creator<NewsItem> CREATOR = new Creator<NewsItem>() {
+        @Override
+        public NewsItem createFromParcel(Parcel in) {
+            return new NewsItem(in);
+        }
+
+        @Override
+        public NewsItem[] newArray(int size) {
+            return new NewsItem[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -43,5 +65,18 @@ public class NewsItem {
 
     public void setDate(String title) {
         this.title = date;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(imgUrl);
+        dest.writeString(date);
     }
 }

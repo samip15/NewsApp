@@ -1,32 +1,39 @@
 package com.example.newsapp.NewsAdapter;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.newsapp.NewsItems.NewsItem;
 import com.example.newsapp.R;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
     List<NewsItem> mNewsItem;
+
+    // onclick for adapter
+
+    private newsAdapterOnClickHandler onClickHandler;
+
     // setter for news data
-    public void setNewsData(List<NewsItem> newsItem) {
+    public void setNewsData(List<NewsItem> newsItem,newsAdapterOnClickHandler onClickHandler) {
         this.mNewsItem = newsItem;
+        this.onClickHandler = onClickHandler;
         notifyDataSetChanged();
     }
 
     public NewsAdapter(List<NewsItem> news) {
         this.mNewsItem = news;
+    }
+
+    // Onclick interface
+
+    public interface newsAdapterOnClickHandler {
+        void onItemClick(NewsItem news);
     }
 
 
@@ -63,7 +70,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder {
+    public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTextView, tvDescription, tvDate;
         ImageView ivNewsImage;
         public NewsViewHolder(@NonNull View itemView) {
@@ -72,6 +79,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             titleTextView = itemView.findViewById(R.id.title_tv);
             tvDescription = itemView.findViewById(R.id.discryption_tv);
             tvDate = itemView.findViewById(R.id.date_tv);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int adapterposition = getAdapterPosition();
+            NewsItem news = mNewsItem.get(adapterposition);
+            onClickHandler.onItemClick(news);
+
         }
     }
 }

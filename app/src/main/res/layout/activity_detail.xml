@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+    android:layout_marginTop="30dp"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_weight="0.3"
+            android:id="@+id/img_iv_detail"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_marginStart="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:justificationMode="inter_word"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_tv_detail"
+                android:text="@string/title_news"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:scrollHorizontally="false"/>
+
+            <TextView
+                android:justificationMode="inter_word"
+                android:layout_gravity="center_horizontal|start"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/discryption_tv_detail"
+                android:text="@string/title_des"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:scrollHorizontally="false"
+                />
+        </LinearLayout>
+</LinearLayout>

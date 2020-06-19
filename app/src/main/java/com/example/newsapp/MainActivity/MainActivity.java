@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,12 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.newsapp.DetailActivity.DetailActivity;
 import com.example.newsapp.LocationPrefrences.LocationPrefrences;
 import com.example.newsapp.NetworkUtils.NetworkUtils;
 import com.example.newsapp.NewsAdapter.NewsAdapter;
 import com.example.newsapp.NewsItems.NewsItem;
 import com.example.newsapp.NewsJson.OpenJsonNews;
 import com.example.newsapp.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONException;
@@ -34,14 +37,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>,NewsAdapter.newsAdapterOnClickHandler {
 
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
     private TextView mErrorMessageDisplay;
     private static final int NEWS_LOADER_ID = 0;
-    private SpinKitView mLoadingIndicator;
     Context mContext = MainActivity.this;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
     @Override
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         mRecycler = findViewById(R.id.recycler_view);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message);
-        mLoadingIndicator = findViewById(R.id.loading_indicator);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         //set rv
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecycler.setLayoutManager(linearLayout);
@@ -87,11 +90,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             protected void onStartLoading() {
+                mShimmerViewContainer.startShimmerAnimation();
 
                 if (mNewsData != null) {
                     deliverResult(mNewsData);
                 }
-                mLoadingIndicator.setVisibility(View.VISIBLE);
+
                 // triggers the load in background function to load data
                 forceLoad();
             }
@@ -127,12 +131,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(@NonNull Loader<List<NewsItem>> loader, List<NewsItem> data) {
 
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
 
         // Add the movie data
         if (data != null && !data.isEmpty()) {
             showNewsDataView();
-            myNewsAdapter.setNewsData(data);
+            myNewsAdapter.setNewsData(data,this);
         } else {
             showErrorMessage();
         }
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     //------------------------Menu items---------------------
 
     private void invilidateNewsData() {
-        myNewsAdapter.setNewsData(null);
+        myNewsAdapter.setNewsData(null,this);
     }
 
     /**
@@ -188,5 +193,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(NewsItem news) {
+
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_NEWS, news);
+        startActivity(intent);
+
     }
 }
