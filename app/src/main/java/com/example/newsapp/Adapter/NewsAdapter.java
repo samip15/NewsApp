@@ -79,6 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             titleTextView = itemView.findViewById(R.id.title_tv);
             tvDescription = itemView.findViewById(R.id.discryption_tv);
             tvDate = itemView.findViewById(R.id.date_tv);
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -87,6 +88,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             int adapterposition = getAdapterPosition();
             NewsItem news = mNewsItem.get(adapterposition);
             onClickHandler.onItemClick(news);
+
+
 
         }
     }

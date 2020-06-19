@@ -30,7 +30,6 @@
                 android:id="@+id/title_tv_detail"
                 android:text="@string/title_news"
                 android:textStyle="bold"
-                android:ellipsize="end"
                 android:maxLines="2"
                 android:scrollHorizontally="false"/>
 
@@ -42,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/discryption_tv_detail"
                 android:text="@string/title_des"
-                android:ellipsize="end"
                 android:maxLines="4"
                 android:scrollHorizontally="false"
                 />
