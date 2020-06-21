@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsApp</string>
+    <string name="app_name">Indian News</string>
     <string name="title_news">Title</string>
     <string name="title_des">Description</string>
     <string name="title_date">Date</string>

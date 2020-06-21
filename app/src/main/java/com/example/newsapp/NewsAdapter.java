@@ -1,4 +1,4 @@
-package com.example.newsapp.Adapter;
+package com.example.newsapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,8 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.newsapp.Items.NewsItem;
-import com.example.newsapp.R;
+import com.example.newsapp.Model.NewsItem;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 

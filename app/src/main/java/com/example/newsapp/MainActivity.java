@@ -1,4 +1,4 @@
-package com.example.newsapp.MainActivity;
+package com.example.newsapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.newsapp.Detail.DetailActivity;
-import com.example.newsapp.Prefrences.LocationPrefrences;
-import com.example.newsapp.Network.NetworkUtils;
-import com.example.newsapp.Adapter.NewsAdapter;
-import com.example.newsapp.Items.NewsItem;
-import com.example.newsapp.Json.OpenJsonNews;
-import com.example.newsapp.R;
+import com.example.newsapp.Data.NewsLocationPrefrences;
+import com.example.newsapp.Utilities.NetworkUtils;
+import com.example.newsapp.Model.NewsItem;
+import com.example.newsapp.Utilities.JsonNews;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONException;
@@ -35,7 +32,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>,NewsAdapter.newsAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>, NewsAdapter.newsAdapterOnClickHandler {
 
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
@@ -88,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             protected void onStartLoading() {
+
+                mShimmerViewContainer.setVisibility(View.VISIBLE);
+
                 mShimmerViewContainer.startShimmerAnimation();
 
                 if (mNewsData != null) {
@@ -101,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Nullable
             @Override
             public List<NewsItem> loadInBackground() {
-                String location = LocationPrefrences.getPreferedWeatherLocation(mContext);
+                String location = NewsLocationPrefrences.getPreferedWeatherLocation(mContext);
                 URL newsRequestUrl = NetworkUtils.buildUrl(location);
                 List<NewsItem> newsDataFromJson = null;
                 try {
                     String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                    newsDataFromJson = OpenJsonNews.getWeatherDataFromJson(MainActivity.this, jsonNewsResponse);
+                    newsDataFromJson = JsonNews.getWeatherDataFromJson(MainActivity.this, jsonNewsResponse);
                     return newsDataFromJson;
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -130,12 +130,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(@NonNull Loader<List<NewsItem>> loader, List<NewsItem> data) {
 
         mShimmerViewContainer.stopShimmerAnimation();
-        mShimmerViewContainer.setVisibility(View.GONE);
+        mShimmerViewContainer.setVisibility(View.INVISIBLE);
 
         // Add the movie data
         if (data != null && !data.isEmpty()) {
             showNewsDataView();
-            myNewsAdapter.setNewsData(data,this);
+            myNewsAdapter.setNewsData(data, this);
         } else {
             showErrorMessage();
         }
@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    //------------------------Menu items---------------------
+    //------------------------ Menu items ------------------------------------
 
     private void invilidateNewsData() {
-        myNewsAdapter.setNewsData(null,this);
+        myNewsAdapter.setNewsData(null, this);
     }
 
     /**

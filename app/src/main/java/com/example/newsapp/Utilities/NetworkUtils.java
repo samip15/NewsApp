@@ -1,4 +1,4 @@
-package com.example.newsapp.Network;
+package com.example.newsapp.Utilities;
 
 import android.net.Uri;
 
@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
-    private static final String TAG = "com/example/newsapp/Network";
+    private static final String TAG = "com/example/newsapp/Utilities";
     private static final String BASE_NEWS_URL = "http://newsapi.org/v2/top-headlines";
     private static final String appid = "2feae0cc3b534626b20a8eaee2b63a03";
     static String APPID_PARAM = "apiKey";

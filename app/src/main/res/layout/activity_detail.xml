@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:weightSum="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginTop="30dp"
-        android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:weightSum="1">
 
-        <ImageView
-            android:layout_weight="0.3"
-            android:id="@+id/img_iv_detail"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/ic_launcher" />
+    <ImageView
+        android:id="@+id/img_iv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher" />
 
-        <LinearLayout
-            android:layout_marginStart="10dp"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.7"
+        android:orientation="vertical">
 
-            <TextView
-                android:justificationMode="inter_word"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_tv_detail"
-                android:text="@string/title_news"
-                android:textStyle="bold"
-                android:maxLines="2"
-                android:scrollHorizontally="false"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:id="@+id/title_tv_detail"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:maxLines="2"
+            android:scrollHorizontally="false"
+            android:text="@string/title_news"
+            android:textStyle="bold" />
 
-            <TextView
-                android:justificationMode="inter_word"
-                android:layout_gravity="center_horizontal|start"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/discryption_tv_detail"
-                android:text="@string/title_des"
-                android:maxLines="4"
-                android:scrollHorizontally="false"
-                />
-        </LinearLayout>
+        <TextView
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/discryption_tv_detail"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|start"
+            android:justificationMode="inter_word"
+            android:maxLines="4"
+            android:scrollHorizontally="false"
+            android:text="@string/title_des" />
+    </LinearLayout>
 </LinearLayout>

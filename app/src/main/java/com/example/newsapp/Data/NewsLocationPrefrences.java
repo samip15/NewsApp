@@ -1,8 +1,8 @@
-package com.example.newsapp.Prefrences;
+package com.example.newsapp.Data;
 
 import android.content.Context;
 
-public class LocationPrefrences {
+public class NewsLocationPrefrences {
     private static final String DEFAULT_LOCATION_NEWS = "in";
     public static String getPreferedWeatherLocation(Context context) {
         return getDefaultLocationNews();

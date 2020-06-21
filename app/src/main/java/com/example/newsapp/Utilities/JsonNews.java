@@ -1,8 +1,8 @@
-package com.example.newsapp.Json;
+package com.example.newsapp.Utilities;
 
 import android.content.Context;
 
-import com.example.newsapp.Items.NewsItem;
+import com.example.newsapp.Model.NewsItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenJsonNews {
+public class JsonNews {
     public static List<NewsItem> getWeatherDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
         final String NEWS_MESSAGE_CODE = "status";
         final String NEWS_DESCRIPTION = "description";
