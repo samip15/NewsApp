@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -32,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>, NewsAdapter.newsAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>, NewsAdapter.newsAdapterOnClickHandler, SharedPreferences.OnSharedPreferenceChangeListener {
 
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER_ID = 0;
     Context mContext = MainActivity.this;
     private ShimmerFrameLayout mShimmerViewContainer;
+    // if shared preference has been changed
+    private static boolean  PREFRENCE_UPDATED = false;
 
 
     @Override
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         myNewsAdapter = new NewsAdapter(news);
         mRecycler.setAdapter(myNewsAdapter);
         getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
+        // resister preference
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
 
@@ -190,6 +196,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
             return true;
         }
+
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -200,5 +212,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra(DetailActivity.EXTRA_NEWS, news);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PREFRENCE_UPDATED = true;
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (PREFRENCE_UPDATED){
+            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID,null,this);
+            PREFRENCE_UPDATED = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }
