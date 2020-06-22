@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonNews {
-    public static List<NewsItem> getWeatherDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
+    public static List<NewsItem> getNewsDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
         final String NEWS_MESSAGE_CODE = "status";
         final String NEWS_DESCRIPTION = "description";
         final String NEWS_DATE = "publishedAt";

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 List<NewsItem> newsDataFromJson = null;
                 try {
                     String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                    newsDataFromJson = JsonNews.getWeatherDataFromJson(MainActivity.this, jsonNewsResponse);
+                    newsDataFromJson = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
                     return newsDataFromJson;
                 } catch (JSONException e) {
                     e.printStackTrace();
