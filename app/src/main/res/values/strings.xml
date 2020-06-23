@@ -6,43 +6,31 @@
     <string name="error_message">Cannot Connect Please Check Your Internet Connection</string>
     <string name="refresh_menue">Refresh</string>
     <string name="action_share">Share</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- -  -  - -  Sort By  - -  - -->
-    <string name="pref_sort_by_everything" translatable="false">everything</string>
-    <string name="pref_country" translatable="false">in</string>
-    <string name="pref_sort_by_topheadline" translatable="false">top-headlines</string>
-    <string name="pref_sort_by_sources" translatable="false">sources</string>
+    <!-- -  -  - -  Label By  - -  - -->
     <string name="pref_sort_by_sources_label">Sources</string>
     <string name="pref_sort_by_everthing_label">Everything</string>
     <string name="pref_country_label_india">India</string>
     <string name="pref_country_label_usa">United States Of America</string>
     <string name="pref_country_label_aus">Australia</string>
-    <string name="pref_country_default">in</string>
+    <string name="pref_sort_by_topheadline_label">Top Headlines</string>
+    <!--  - - -  Keys - - - - -->
+    <string name="pref_sort_by_key" translatable="false">sort_by</string>
+    <string name="pref_country_key" translatable="false">country_key</string>
+    <string name="pref_search_key" translatable="false">search_item</string>
+    <!--  - - -  Values - - - - -->
     <string name="pref_country_value_in">in</string>
     <string name="pref_country_value_us">us</string>
     <string name="pref_country_value_au">au</string>
-    <string name="pref_sort_by_topheadline_label">Top Headlines</string>
-    <string name="pref_sort_by_everything_default" translatable="false">everything</string>
-    <string name="pref_sort_by_key" translatable="false">sort by</string>
-    <string name="pref_country_key" translatable="false">country key</string>
+    <string name="pref_country" translatable="false">in</string>
+    <string name="pref_sort_by_everything" translatable="false">everything</string>
+    <string name="pref_sort_by_topheadline" translatable="false">top-headlines</string>
+    <string name="pref_sort_by_sources" translatable="false">sources</string>
+    <!--  - - -  Title - - - - -->
     <string name="pref_sort_by_title" translatable="false">Sort By</string>
     <string name="pref_country_by_title" translatable="false">Countries</string>
     <string name="pref_search_level">Search Order By</string>
     <string name="pref_search_default" translatable="false">covid 19</string>
-    <string name="pref_search_key" translatable="false">search item</string>
+
     <!--Settings Menu - - -  - - -->
     <string name="action_settings">Settings</string>
 

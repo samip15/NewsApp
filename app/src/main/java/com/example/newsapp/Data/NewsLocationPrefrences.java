@@ -12,7 +12,7 @@ public class NewsLocationPrefrences {
     public static String getPreferedWeatherLocation(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         String keyLocation = context.getString(R.string.pref_country_key);
-        String defaultLocation = context.getString(R.string.pref_country_default);
+        String defaultLocation = context.getString(R.string.pref_country_value_in);
         return pref.getString(keyLocation,defaultLocation);
     }
 

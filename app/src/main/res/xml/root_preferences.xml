@@ -17,7 +17,7 @@
         app:title="@string/pref_country_by_title" />
 
     <ListPreference
-        app:defaultValue="@string/pref_sort_by_everything_default"
+        app:defaultValue="@string/pref_sort_by_everything"
         app:entries="@array/pref_sort_by_option"
         app:entryValues="@array/pref_sort_by_value"
         app:key="@string/pref_sort_by_key"
