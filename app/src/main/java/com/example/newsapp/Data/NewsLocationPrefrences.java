@@ -9,7 +9,7 @@ import com.example.newsapp.R;
 
 public class NewsLocationPrefrences {
     private static final String DEFAULT_LOCATION_NEWS = "in";
-    public static String getPreferedWeatherLocation(Context context) {
+    public static String getPreferedNewsLocation(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         String keyLocation = context.getString(R.string.pref_country_key);
         String defaultLocation = context.getString(R.string.pref_country_value_in);

@@ -29,8 +29,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         for (int i = 0; i < count; i++) {
             Preference p = preferenceScreen.getPreference(i);
             String value = sharedPreferences.getString(p.getKey(), "");
-            showSearchEditPreference(p, "");
-            showCountryListPreference(p, "");
+            showSearchEditPreference(p, value);
+            showCountryListPreference(p, value);
             setPreferenceSummary(p, value);
         }
     }
@@ -88,7 +88,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
      * @param sharedPreferences
      * @param key
      */
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference p = findPreference(key);

@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Nullable
             @Override
             public List<NewsItem> loadInBackground() {
-                String location = NewsLocationPrefrences.getPreferedWeatherLocation(mContext);
+                String location = NewsLocationPrefrences.getPreferedNewsLocation(mContext);
                 URL newsRequestUrl = NetworkUtils.buildUrl(location);
                 List<NewsItem> newsDataFromJson = null;
                 try {
