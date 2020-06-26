@@ -16,28 +16,63 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
+    /* Json Variables */
     private static final String TAG = "com/example/newsapp/Utilities";
     private static final String BASE_NEWS_URL_top_headline = "http://newsapi.org/v2/top-headlines";
     private static final String BASE_NEWS_URL_everything = "http://newsapi.org/v2/everything";
-    private static final String BASE_NEWS_URL_sources = "https://newsapi.org/v2/sources";
     private static final String appid = "2feae0cc3b534626b20a8eaee2b63a03";
     static String APPID_PARAM = "apiKey";
     static String QUERY_PARAM = "country";
 
-    public static URL buildUrl(String countryname) {
-        Uri builduri = Uri.parse(BASE_NEWS_URL_top_headline).buildUpon()
+    /**
+     * Building Uri to Url
+     *
+     * @param countryname:Country Name
+     * @return: returns url
+     */
+    public static URL buildUrl_topHeadline(String countryname) {
+        Uri builduri_top_headline = Uri.parse(BASE_NEWS_URL_top_headline).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, countryname)
                 .appendQueryParameter(APPID_PARAM, appid)
                 .build();
         URL url = null;
         try {
-            url = new URL(builduri.toString());
+
+            url = new URL(builduri_top_headline.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return url;
     }
 
+    /**
+     * Building Uri to Url For Sort By Everything
+     *
+     * @param search:Country Name
+     * @return: returns url
+     */
+    public static URL buildUrl_Everything(String search) {
+        Uri builduri_top_headline = Uri.parse(BASE_NEWS_URL_everything).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, search)
+                .appendQueryParameter(APPID_PARAM, appid)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builduri_top_headline.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+
+    /**
+     * This Method Triggers Each Url And Scans
+     *
+     * @param url:So Called Url
+     * @throws IOException:Input Output Exception
+     * @return:String Or Null
+     */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -55,5 +90,6 @@ public class NetworkUtils {
             urlConnection.disconnect();
         }
     }
+
 
 }

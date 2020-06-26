@@ -67,8 +67,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     /**
      * To Set Summary
      *
-     * @param p     = preference
-     * @param value = Shared Preference Value
+     * @param p     : preference
+     * @param value : Shared Preference Value
      */
     private void setPreferenceSummary(Preference p, String value) {
         if (p instanceof ListPreference) {

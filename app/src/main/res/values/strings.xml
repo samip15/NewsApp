@@ -25,6 +25,7 @@
     <string name="pref_sort_by_everything" translatable="false">everything</string>
     <string name="pref_sort_by_topheadline" translatable="false">top-headlines</string>
     <string name="pref_sort_by_sources" translatable="false">sources</string>
+    <string name="pref_search_by_default" translatable="false">covid19</string>
     <!--  - - -  Title - - - - -->
     <string name="pref_sort_by_title" translatable="false">Sort By</string>
     <string name="pref_country_by_title" translatable="false">Countries</string>

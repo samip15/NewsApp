@@ -43,13 +43,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Context mContext = MainActivity.this;
     private ShimmerFrameLayout mShimmerViewContainer;
     // if shared preference has been changed
-    private static boolean  PREFRENCE_UPDATED = false;
+    private static boolean PREFRENCE_UPDATED = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /* Finding All Needed Items By Find View By Id*/
         mRecycler = findViewById(R.id.recycler_view);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //adapter
         myNewsAdapter = new NewsAdapter(news);
         mRecycler.setAdapter(myNewsAdapter);
+        /* Initializing loader For The First Time */
         getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
         // resister preference
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
@@ -77,11 +79,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecycler.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * This Method Is Used For Showing The Error Message
+     */
     private void showErrorMessage() {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
         mRecycler.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * This Method Is On create Of Async Task Loader
+     *
+     * @param id:         Initialized Id From MainActivity On Create
+     * @param args:Bundle Args Null If Need Not To Specify
+     * @return: N/A
+     */
     @NonNull
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, @Nullable Bundle args) {
@@ -93,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             protected void onStartLoading() {
 
                 mShimmerViewContainer.setVisibility(View.VISIBLE);
-
                 mShimmerViewContainer.startShimmerAnimation();
 
                 if (mNewsData != null) {
@@ -104,25 +115,53 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 forceLoad();
             }
 
+            /**
+             * This Method Loads Item In Background
+             * @return
+             */
             @Nullable
             @Override
             public List<NewsItem> loadInBackground() {
                 String location = NewsLocationPrefrences.getPreferedNewsLocation(mContext);
-                URL newsRequestUrl = NetworkUtils.buildUrl(location);
-                List<NewsItem> newsDataFromJson = null;
-                try {
-                    String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                    newsDataFromJson = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
-                    return newsDataFromJson;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                if (sharedPreferences.getBoolean(getString(R.string.pref_sort_by_topheadline), true)) {
+                    URL newsRequestUrl = NetworkUtils.buildUrl_topHeadline(location);
+                    List<NewsItem> newsDataFromJson_topHeadline = null;
+                    try {
+                        String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
+                        newsDataFromJson_topHeadline = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
+                        return newsDataFromJson_topHeadline;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                } else {
+                    String search_by = NewsLocationPrefrences.getPreferedNewsSearch(mContext);
+                    URL newsRequestUrl = NetworkUtils.buildUrl_Everything(search_by);
+                    List<NewsItem> newsDataFromJson_everything = null;
+                    try {
+                        String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
+                        newsDataFromJson_everything = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
+                        return newsDataFromJson_everything;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
                 }
+
+
             }
 
+            /**
+             * If Data Needs To Cached
+             */
             @Override
             public void deliverResult(@Nullable List<NewsItem> data) {
                 mNewsData = data;
@@ -131,7 +170,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         };
     }
 
-
+    /**
+     * This Method Is Invoked When Load In Background Is Finished
+     *
+     * @param data:Load In Background Result Data
+     */
     @Override
     public void onLoadFinished(@NonNull Loader<List<NewsItem>> loader, List<NewsItem> data) {
 
@@ -152,17 +195,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * If Loader Needs To Be Reset
+     *
+     * @param loader
+     */
     @Override
     public void onLoaderReset(@NonNull Loader<List<NewsItem>> loader) {
 
     }
 
+    /**
+     * Checks Up If System Is Online Or Not
+     *
+     * @return :Current Network If Connected Or Connecting
+     */
     private boolean isOnline() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
+    /**
+     * Displays Offline Message If No Connection
+     */
     private void showOfflineMessage() {
         mRecycler.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
@@ -205,6 +261,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Item Clicked From Each Views
+     */
     @Override
     public void onItemClick(NewsItem news) {
 
@@ -214,17 +273,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * If Prefrence Is Changed
+     *
+     * @param sharedPreferences:Pref to save data
+     * @param key:key                to identify
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         PREFRENCE_UPDATED = true;
 
     }
 
+    /*---------------------------- lifecycle methods------------------ */
     @Override
     protected void onStart() {
         super.onStart();
-        if (PREFRENCE_UPDATED){
-            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID,null,this);
+        if (PREFRENCE_UPDATED) {
+            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
             PREFRENCE_UPDATED = false;
         }
     }
