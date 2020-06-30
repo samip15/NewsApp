@@ -16,7 +16,7 @@ public class NewsItem implements Parcelable {
         this.description = description;
         this.imgUrl = imgUrl;
         this.date = date;
-        this.author =author;
+        this.author = author;
         this.sourceName = sourceName;
     }
 
