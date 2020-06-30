@@ -43,7 +43,7 @@ public class JsonNews {
         for (int i = 0; i < NewsArray.length(); i++) {
             JSONObject newsobj = NewsArray.getJSONObject(i);
             String originalSources = null;
-            for (int j = 0; i < newsobj.length(); j++) {
+            for (int j = 0; j < newsobj.length(); j++) {
                 if (newsobj.has(NEWS_SOURCES)) {
                     // Extract the value for the key called "original_sources"
                     originalSources = newsobj.getString(NEWS_SOURCE_NAME);
