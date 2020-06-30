@@ -17,14 +17,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_NEWS = "news";
     private static final String HAS_TAG = "# Indian News";
-
     NewsItem newsItem;
-
-    TextView titleTv, descriptionTv;
+    TextView titleTv, descriptionTv, mAuthor, mSources;
     ImageView detailImage;
-
-    String newsTitle,newsDescription;
-
+    String newsTitle, newsDescription,newsSources,newsAuthor;
 
 
     @Override
@@ -35,11 +31,17 @@ public class DetailActivity extends AppCompatActivity {
         titleTv = findViewById(R.id.title_tv_detail);
         descriptionTv = findViewById(R.id.discryption_tv_detail);
         detailImage = findViewById(R.id.img_iv_detail);
+        mAuthor = findViewById(R.id.author);
+        mSources = findViewById(R.id.source_name);
 
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(EXTRA_NEWS)) {
                 newsItem = intent.getParcelableExtra(EXTRA_NEWS);
+                newsSources = newsItem.getSourceName();
+                mSources.setText(newsSources);
+                newsAuthor = newsItem.getAuthor();
+                mAuthor.setText(newsAuthor);
                 newsTitle = newsItem.getTitle();
                 titleTv.setText(newsTitle);
                 newsDescription = newsItem.getDescription();
@@ -64,7 +66,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent shareintent = ShareCompat.IntentBuilder.from(this)
                 .setType("text/plain")
-                .setText(newsTitle+ "\n" + "\n" + newsDescription + "\n" + HAS_TAG)
+                .setText(newsTitle + "\n" + "\n" + newsDescription + "\n" + HAS_TAG)
                 .getIntent();
         return shareintent;
     }

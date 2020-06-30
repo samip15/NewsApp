@@ -19,6 +19,9 @@ public class JsonNews {
         final String NEWS_TITLE = "title";
         final String NEWS_IMAGE_URL = "urlToImage";
         final String NEWS_ARTICLE = "articles";
+        final String NEWS_SOURCES = "source";
+        final String NEWS_SOURCE_NAME = "name";
+        final String NEWS_AUTHOR = "author";
 
         List<NewsItem> listItemArrayList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(jsonNewsResponse);
@@ -38,8 +41,22 @@ public class JsonNews {
 
         JSONArray NewsArray = jsonObject.getJSONArray(NEWS_ARTICLE);
         for (int i = 0; i < NewsArray.length(); i++) {
-
             JSONObject newsobj = NewsArray.getJSONObject(i);
+            String originalSources = null;
+            for (int j = 0; i < newsobj.length(); j++) {
+                if (newsobj.has(NEWS_SOURCES)) {
+                    // Extract the value for the key called "original_sources"
+                    originalSources = newsobj.getString(NEWS_SOURCE_NAME);
+                }
+            }
+
+
+            String originalAuthor = null;
+            if (newsobj.has(NEWS_AUTHOR)) {
+                // Extract the value for the key called "original_Author"
+                originalAuthor = newsobj.getString(NEWS_AUTHOR);
+            }
+
 
             String originalTitle = null;
             if (newsobj.has(NEWS_TITLE)) {
@@ -68,14 +85,14 @@ public class JsonNews {
 
 
             // Create a new {@link News} object
-            NewsItem news = new NewsItem(originalTitle,originalDes,Imgurl,originalDate);
+            NewsItem news = new NewsItem(originalTitle, originalDes, Imgurl, originalDate, originalSources,originalAuthor);
             // Add the new {@link News} to the list of News
             listItemArrayList.add(news);
 
         }
 
 
-        return  listItemArrayList;
+        return listItemArrayList;
 
 
     }

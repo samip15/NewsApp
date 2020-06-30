@@ -8,12 +8,16 @@ public class NewsItem implements Parcelable {
     String description;
     String imgUrl;
     String date;
+    String sourceName;
+    String author;
 
-    public NewsItem(String title, String description, String imgUrl, String date) {
+    public NewsItem(String title, String description, String imgUrl, String date,String sourceName,String author) {
         this.title = title;
         this.description = description;
         this.imgUrl = imgUrl;
         this.date = date;
+        this.author =author;
+        this.sourceName = sourceName;
     }
 
     protected NewsItem(Parcel in) {
@@ -21,6 +25,8 @@ public class NewsItem implements Parcelable {
         description = in.readString();
         imgUrl = in.readString();
         date = in.readString();
+        sourceName = in.readString();
+        author = in.readString();
     }
 
     public static final Creator<NewsItem> CREATOR = new Creator<NewsItem>() {
@@ -55,6 +61,7 @@ public class NewsItem implements Parcelable {
         return imgUrl;
     }
 
+
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
@@ -65,6 +72,22 @@ public class NewsItem implements Parcelable {
 
     public void setDate(String title) {
         this.title = date;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     @Override
@@ -78,5 +101,7 @@ public class NewsItem implements Parcelable {
         dest.writeString(description);
         dest.writeString(imgUrl);
         dest.writeString(date);
+        dest.writeString(author);
+        dest.writeString(sourceName);
     }
 }

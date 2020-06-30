@@ -1,8 +1,10 @@
 package com.example.newsapp.Utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -23,6 +25,7 @@ public class NetworkUtils {
     private static final String appid = "2feae0cc3b534626b20a8eaee2b63a03";
     static String APPID_PARAM = "apiKey";
     static String QUERY_PARAM = "country";
+    static String SEARCH_QUERY_PARAM = "q";
 
     /**
      * Building Uri to Url
@@ -51,14 +54,16 @@ public class NetworkUtils {
      * @param search:Country Name
      * @return: returns url
      */
+    @SuppressLint("LongLogTag")
     public static URL buildUrl_Everything(String search) {
-        Uri builduri_top_headline = Uri.parse(BASE_NEWS_URL_everything).buildUpon()
-                .appendQueryParameter(QUERY_PARAM, search)
+        Uri builduri_everything = Uri.parse(BASE_NEWS_URL_everything).buildUpon()
+                .appendQueryParameter(SEARCH_QUERY_PARAM, search)
                 .appendQueryParameter(APPID_PARAM, appid)
                 .build();
         URL url = null;
         try {
-            url = new URL(builduri_top_headline.toString());
+            url = new URL(builduri_everything.toString());
+            Log.e(TAG, "url is "+ url );
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -78,6 +83,7 @@ public class NetworkUtils {
         try {
             InputStream in = urlConnection.getInputStream();
             Scanner scanner = new Scanner(in);
+            // determines the start of the string
             scanner.useDelimiter("\\A");
             boolean hasInput = scanner.hasNext();
             if (hasInput) {

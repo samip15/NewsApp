@@ -25,6 +25,31 @@
         <TextView
             android:layout_marginTop="20dp"
             android:gravity="center"
+            android:id="@+id/source_name"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:maxLines="2"
+            android:scrollHorizontally="false"
+            android:text="@string/sources"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:id="@+id/author"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:maxLines="2"
+            android:scrollHorizontally="false"
+            android:text="@string/author"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:id="@+id/title_tv_detail"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"

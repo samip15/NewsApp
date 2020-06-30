@@ -93,8 +93,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference p = findPreference(key);
         if (p != null) {
             String value = sharedPreferences.getString(p.getKey(), "");
-            showSearchEditPreference(p, value);
-            showCountryListPreference(p, value);
+            if (p instanceof ListPreference && !key.equals(getString(R.string.pref_country_key))) {
+                showSearchEditPreference(p, value);
+            }
+            if (!(p instanceof EditTextPreference)) {
+                showCountryListPreference(p, value);
+            }
+
             setPreferenceSummary(p, value);
         }
     }

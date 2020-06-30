@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ShimmerFrameLayout mShimmerViewContainer;
     // if shared preference has been changed
     private static boolean PREFRENCE_UPDATED = false;
+    private static final String TAG = "MainActivity";
 
 
     @Override
@@ -101,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new AsyncTaskLoader<List<NewsItem>>(this) {
             List<NewsItem> mNewsData = null;
 
+            /**
+             * This method is similar to on pre execute in async task
+             */
             @Override
             protected void onStartLoading() {
 
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public List<NewsItem> loadInBackground() {
                 String location = NewsLocationPrefrences.getPreferedNewsLocation(mContext);
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                if (sharedPreferences.getBoolean(getString(R.string.pref_sort_by_topheadline), true)) {
+                if (sharedPreferences.getString(getString(R.string.pref_sort_by_key), "").equals(getString(R.string.pref_sort_by_topheadline))) {
                     URL newsRequestUrl = NetworkUtils.buildUrl_topHeadline(location);
                     List<NewsItem> newsDataFromJson_topHeadline = null;
                     try {
@@ -144,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     List<NewsItem> newsDataFromJson_everything = null;
                     try {
                         String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
+                        Log.e(TAG, "loadInBackground: "+jsonNewsResponse );
                         newsDataFromJson_everything = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
                         return newsDataFromJson_everything;
                     } catch (JSONException e) {

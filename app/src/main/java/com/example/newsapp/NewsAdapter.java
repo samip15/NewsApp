@@ -1,16 +1,22 @@
 package com.example.newsapp;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.newsapp.Model.NewsItem;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
+    private static final String TAG = "NewsAdapter";
 
     List<NewsItem> mNewsItem;
 
@@ -19,7 +25,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     private newsAdapterOnClickHandler onClickHandler;
 
     // setter for news data
-    public void setNewsData(List<NewsItem> newsItem,newsAdapterOnClickHandler onClickHandler) {
+    public void setNewsData(List<NewsItem> newsItem, newsAdapterOnClickHandler onClickHandler) {
         this.mNewsItem = newsItem;
         this.onClickHandler = onClickHandler;
         notifyDataSetChanged();
@@ -56,7 +62,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.titleTextView.setText(title);
         holder.tvDescription.setText(description);
         holder.tvDate.setText(convertedDT);
-        Picasso.get().load(imageNews).placeholder(R.mipmap.ic_launcher).into(holder.ivNewsImage);
+        if (imageNews.isEmpty()) {
+            holder.ivNewsImage.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Picasso.get().load(imageNews).into(holder.ivNewsImage);
+        }
 
     }
 
@@ -65,13 +75,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         if (mNewsItem == null) {
             return 0;
         } else {
-            return  mNewsItem.size();
+            return mNewsItem.size();
         }
     }
 
     public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTextView, tvDescription, tvDate;
         ImageView ivNewsImage;
+
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             ivNewsImage = itemView.findViewById(R.id.img_iv);
@@ -87,7 +98,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             int adapterposition = getAdapterPosition();
             NewsItem news = mNewsItem.get(adapterposition);
             onClickHandler.onItemClick(news);
-
 
 
         }
