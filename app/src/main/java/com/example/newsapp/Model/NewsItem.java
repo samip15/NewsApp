@@ -90,6 +90,7 @@ public class NewsItem implements Parcelable {
         this.author = author;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -101,7 +102,7 @@ public class NewsItem implements Parcelable {
         dest.writeString(description);
         dest.writeString(imgUrl);
         dest.writeString(date);
-        dest.writeString(author);
         dest.writeString(sourceName);
+        dest.writeString(author);
     }
 }

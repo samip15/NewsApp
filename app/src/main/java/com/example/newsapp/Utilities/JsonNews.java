@@ -42,11 +42,13 @@ public class JsonNews {
         JSONArray NewsArray = jsonObject.getJSONArray(NEWS_ARTICLE);
         for (int i = 0; i < NewsArray.length(); i++) {
             JSONObject newsobj = NewsArray.getJSONObject(i);
+            JSONObject newSourcesObj = null;
             String originalSources = null;
-            for (int j = 0; j < newsobj.length(); j++) {
-                if (newsobj.has(NEWS_SOURCES)) {
-                    // Extract the value for the key called "original_sources"
-                    originalSources = newsobj.getString(NEWS_SOURCE_NAME);
+            if (newsobj.has(NEWS_SOURCES)) {
+                // Extract the value for the key called "original_sources"
+                 newSourcesObj = newsobj.getJSONObject(NEWS_SOURCES);
+                if (newSourcesObj.has(NEWS_SOURCE_NAME)){
+                    originalSources = newSourcesObj.getString(NEWS_SOURCE_NAME);
                 }
             }
 
@@ -85,7 +87,7 @@ public class JsonNews {
 
 
             // Create a new {@link News} object
-            NewsItem news = new NewsItem(originalTitle, originalDes, Imgurl, originalDate, originalSources,originalAuthor);
+            NewsItem news = new NewsItem(originalTitle, originalDes, Imgurl, originalDate, originalSources, originalAuthor);
             // Add the new {@link News} to the list of News
             listItemArrayList.add(news);
 

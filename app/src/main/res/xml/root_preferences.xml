@@ -1,12 +1,11 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
-        app:defaultValue="@string/pref_search_default"
         android:inputType="text"
-        app:key="@string/pref_search_key"
         android:singleLine="true"
+        app:defaultValue="@string/pref_search_default"
+        app:key="@string/pref_search_key"
         app:title="@string/pref_search_level" />
 
     <ListPreference

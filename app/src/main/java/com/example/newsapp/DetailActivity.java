@@ -20,7 +20,7 @@ public class DetailActivity extends AppCompatActivity {
     NewsItem newsItem;
     TextView titleTv, descriptionTv, mAuthor, mSources;
     ImageView detailImage;
-    String newsTitle, newsDescription,newsSources,newsAuthor;
+    String newsTitle, newsDescription, newsSources, newsAuthor;
 
 
     @Override
