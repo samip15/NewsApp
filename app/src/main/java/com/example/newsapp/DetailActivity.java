@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
             if (intent.hasExtra(EXTRA_NEWS)) {
                 newsItem = intent.getParcelableExtra(EXTRA_NEWS);
                 newsSources = newsItem.getSourceName();
-                mSources.setText(newsSources);
+                mSources.setText(newsSources+ " : ");
                 newsAuthor = newsItem.getAuthor();
                 mAuthor.setText(newsAuthor);
                 newsTitle = newsItem.getTitle();

@@ -1,5 +1,6 @@
 package com.example.newsapp;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,8 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private static final String TAG = "NewsAdapter";
-
     List<NewsItem> mNewsItem;
-
     // onclick for adapter
-
     private newsAdapterOnClickHandler onClickHandler;
 
     // setter for news data
@@ -35,11 +33,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     // Onclick interface
-
     public interface newsAdapterOnClickHandler {
         void onItemClick(NewsItem news);
     }
-
 
     @NonNull
     @Override
@@ -97,8 +93,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             int adapterposition = getAdapterPosition();
             NewsItem news = mNewsItem.get(adapterposition);
             onClickHandler.onItemClick(news);
-
-
         }
     }
 }

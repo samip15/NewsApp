@@ -3,63 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="#E6DFDF"
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp">
+
     <LinearLayout
-        android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:weightSum="1">
 
         <ImageView
-            android:contentDescription="@null"
-            android:layout_weight="0.3"
             android:id="@+id/img_iv"
             android:layout_width="0dp"
             android:layout_height="100dp"
+            android:layout_weight="0.3"
+            android:contentDescription="@null"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
-            android:layout_marginStart="10dp"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="0.7"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
-        <TextView
-            android:justificationMode="inter_word"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/title_tv"
-            android:text="@string/title_news"
-            android:textStyle="bold"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="false"/>
+            <TextView
+                android:id="@+id/date_tv"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|end"
+                android:layout_marginRight="30dp"
+                android:text="@string/title_date"
+                android:textStyle="bold" />
 
-        <TextView
-            android:justificationMode="inter_word"
-            android:layout_gravity="center_horizontal|start"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/discryption_tv"
-            android:text="@string/title_des"
-            android:ellipsize="end"
-            android:maxLines="4"
-            android:scrollHorizontally="false"
-            />
+            <TextView
+                android:id="@+id/title_tv"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:justificationMode="inter_word"
+                android:maxLines="2"
+                android:scrollHorizontally="false"
+                android:text="@string/title_news"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/date_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_date"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/discryption_tv"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|start"
+                android:ellipsize="end"
+                android:justificationMode="inter_word"
+                android:maxLines="4"
+                android:scrollHorizontally="false"
+                android:text="@string/title_des" />
+
+
         </LinearLayout>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
