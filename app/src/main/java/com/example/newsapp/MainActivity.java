@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
-import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,30 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.newsapp.Data.NewsLocationPrefrences;
-import com.example.newsapp.Utilities.NetworkUtils;
+import com.example.newsapp.Data.NewsContract;
 import com.example.newsapp.Model.NewsItem;
-import com.example.newsapp.Utilities.JsonNews;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>>, NewsAdapter.newsAdapterOnClickHandler, SharedPreferences.OnSharedPreferenceChangeListener {
-
+public abstract class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner, SharedPreferences.OnSharedPreferenceChangeListener {
+    private int mPosition = RecyclerView.NO_POSITION;
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
     private TextView mErrorMessageDisplay;
@@ -46,6 +41,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // if shared preference has been changed
     private static boolean PREFRENCE_UPDATED = false;
     private static final String TAG = "MainActivity";
+
+    // if shared preference has been changed
+    // weather columns that are displayed and queried
+    public static final String[] MAIN_NEWS_PROJECTION = {
+            NewsContract.NewsEntry.COLUMN_DATE,
+            NewsContract.NewsEntry.COLUMN_TITLE,
+            NewsContract.NewsEntry.COLUMN_description,
+            NewsContract.NewsEntry.COLUMN_IMAGE_URL,
+    };
+    // weather table ko column ko indexes
+    public static final int INDEX_NEWS_DATE = 0;
+    public static final int INDEX_NEWS_TITLE = 1;
+    public static final int INDEX_NEWS_DESC = 2;
+    public static final int INDEX_NEWS_IMAGE_URL = 3;
 
 
     @Override
@@ -62,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecycler.setHasFixedSize(true);
         List<NewsItem> news = new ArrayList<>();
         //adapter
-        myNewsAdapter = new NewsAdapter(news);
+        myNewsAdapter = new NewsAdapter(this, this);
         mRecycler.setAdapter(myNewsAdapter);
         /* Initializing loader For The First Time */
         getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
@@ -70,6 +79,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
+
+    /*
+     *  ----------------------  Recyclerview OnClick --------------------------
+     * */
+    @Override
+    public void onClick(long idDate) {
+        Intent intent = new Intent(mContext, DetailActivity.class);
+        // uri
+        Uri uriforDetail = NewsContract.NewsEntry.buildNewsUriWithDate(idDate);
+        intent.setData(uriforDetail);
+        startActivity(intent);
+    }
+
+
+
 
     /*
      *  ----------------------  Loading Functions --------------------------
@@ -92,111 +116,49 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * This Method Is On create Of Async Task Loader
      *
-     * @param id:         Initialized Id From MainActivity On Create
      * @param args:Bundle Args Null If Need Not To Specify
      * @return: N/A
      */
     @NonNull
     @Override
-    public Loader<List<NewsItem>> onCreateLoader(int id, @Nullable Bundle args) {
-        // create async task loader
-        return new AsyncTaskLoader<List<NewsItem>>(this) {
-            List<NewsItem> mNewsData = null;
+    public Loader<Cursor> onCreateLoader(int loaderId, @Nullable Bundle args) {
 
-            /**
-             * This method is similar to on pre execute in async task
-             */
-            @Override
-            protected void onStartLoading() {
+            mShimmerViewContainer.setVisibility(View.VISIBLE);
+            mShimmerViewContainer.startShimmerAnimation();
 
-                mShimmerViewContainer.setVisibility(View.VISIBLE);
-                mShimmerViewContainer.startShimmerAnimation();
-
-                if (mNewsData != null) {
-                    deliverResult(mNewsData);
-                }
-
-                // triggers the load in background function to load data
-                forceLoad();
+            switch (loaderId) {
+                case NEWS_LOADER_ID:
+                    //uri
+                    Uri forecastQueryUri = NewsContract.NewsEntry.CONTENT_URI;
+                    String sortOrder = NewsContract.NewsEntry.COLUMN_DATE + " ASC";
+                    return new CursorLoader(this,
+                            forecastQueryUri,
+                            MAIN_NEWS_PROJECTION,
+                            null,
+                            null,
+                            sortOrder);
+                default:
+                    throw new RuntimeException("Loader Not Implemented" + loaderId);
             }
+        }
 
-            /**
-             * This Method Loads Item In Background
-             * @return
-             */
-            @Nullable
-            @Override
-            public List<NewsItem> loadInBackground() {
-                String location = NewsLocationPrefrences.getPreferedNewsLocation(mContext);
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                if (sharedPreferences.getString(getString(R.string.pref_sort_by_key), "").equals(getString(R.string.pref_sort_by_topheadline))) {
-                    URL newsRequestUrl = NetworkUtils.buildUrl_topHeadline(location);
-                    List<NewsItem> newsDataFromJson_topHeadline = null;
-                    try {
-                        String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                        newsDataFromJson_topHeadline = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
-                        return newsDataFromJson_topHeadline;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return null;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                } else {
-                    String search_by = NewsLocationPrefrences.getPreferedNewsSearch(mContext);
-                    URL newsRequestUrl = NetworkUtils.buildUrl_Everything(search_by);
-                    List<NewsItem> newsDataFromJson_everything = null;
-                    try {
-                        String jsonNewsResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
-                        Log.e(TAG, "loadInBackground: "+jsonNewsResponse );
-                        newsDataFromJson_everything = JsonNews.getNewsDataFromJson(MainActivity.this, jsonNewsResponse);
-                        return newsDataFromJson_everything;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return null;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-
-                }
-
-
-            }
-
-            /**
-             * If Data Needs To Cached
-             */
-            @Override
-            public void deliverResult(@Nullable List<NewsItem> data) {
-                mNewsData = data;
-                super.deliverResult(data);
-            }
-        };
-    }
 
     /**
      * This Method Is Invoked When Load In Background Is Finished
      *
-     * @param data:Load In Background Result Data
      */
     @Override
-    public void onLoadFinished(@NonNull Loader<List<NewsItem>> loader, List<NewsItem> data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor newsData) {
 
         mShimmerViewContainer.stopShimmerAnimation();
         mShimmerViewContainer.setVisibility(View.INVISIBLE);
 
-        // Add the movie data
-        if (data != null && !data.isEmpty()) {
-            showNewsDataView();
-            myNewsAdapter.setNewsData(data, this);
-        } else {
-            showErrorMessage();
+        myNewsAdapter.swapCursor(newsData);
+        if (mPosition == RecyclerView.NO_POSITION) {
+            mPosition = 0;
         }
-
-        if (!isOnline()) {
-            showOfflineMessage();
+        if (newsData.getCount() != 0) {
+            showNewsDataView();
         }
 
     }
@@ -207,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * @param loader
      */
     @Override
-    public void onLoaderReset(@NonNull Loader<List<NewsItem>> loader) {
-
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        myNewsAdapter.swapCursor(null);
     }
 
     /**
@@ -233,10 +195,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     //------------------------ Menu items ------------------------------------
 
-    private void invilidateNewsData() {
-        myNewsAdapter.setNewsData(null, this);
-    }
-
     /**
      * This Is Created Menu
      *
@@ -254,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            invilidateNewsData();
             getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
             return true;
         }
@@ -267,17 +224,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Item Clicked From Each Views
-     */
-    @Override
-    public void onItemClick(NewsItem news) {
-
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_NEWS, news);
-        startActivity(intent);
-
-    }
 
     /**
      * If Prefrence Is Changed
@@ -306,4 +252,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
+
+
 }

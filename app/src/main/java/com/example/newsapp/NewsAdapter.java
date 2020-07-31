@@ -1,6 +1,7 @@
 package com.example.newsapp;
 
-import android.util.Log;
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +14,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.newsapp.Model.NewsItem;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private static final String TAG = "NewsAdapter";
-    List<NewsItem> mNewsItem;
+    private Cursor mCursor;
+    private final Context mContext;
     // onclick for adapter
-    private newsAdapterOnClickHandler onClickHandler;
+    private final NewsAdapterOnclickListner mOnclickListnrer;
 
-    // setter for news data
-    public void setNewsData(List<NewsItem> newsItem, newsAdapterOnClickHandler onClickHandler) {
-        this.mNewsItem = newsItem;
-        this.onClickHandler = onClickHandler;
+    // -------------------------Rv on click listener-------------------
+    public interface NewsAdapterOnclickListner {
+        void onClick(long idDate);
+    }
+
+    public NewsAdapter(Context context, NewsAdapterOnclickListner listner) {
+        this.mContext = context;
+        this.mOnclickListnrer = listner;
+    }
+
+    // =========================Cursor Function===========================
+    // swap cursor for new weather data
+    public void swapCursor(Cursor newCursor) {
+        mCursor = newCursor;
         notifyDataSetChanged();
     }
 
-    public NewsAdapter(List<NewsItem> news) {
-        this.mNewsItem = news;
-    }
 
-    // Onclick interface
-    public interface newsAdapterOnClickHandler {
-        void onItemClick(NewsItem news);
-    }
+
 
     @NonNull
     @Override
@@ -46,31 +50,29 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder holder, int position) {
-
-        NewsItem news = mNewsItem.get(position);
-        String title = news.getTitle();
-        String description = news.getDescription();
-        String imageNews = news.getImgUrl();
-        String date = news.getDate();
-        String[] dateTime = date.split("T");
-        String convertedDT = dateTime[0] + " " + dateTime[1].replace("Z", "");
+        mCursor.moveToPosition(position);
+        // getting all columns values
+        long date = mCursor.getLong(MainActivity.INDEX_NEWS_DATE);
+        String title = String.valueOf(mCursor.getLong(MainActivity.INDEX_NEWS_TITLE));
+        String description = String.valueOf(mCursor.getLong(MainActivity.INDEX_NEWS_DESC));
+        byte[] imageUrl = mCursor.getBlob(MainActivity.INDEX_NEWS_IMAGE_URL);
         holder.titleTextView.setText(title);
         holder.tvDescription.setText(description);
-        holder.tvDate.setText(convertedDT);
-        if (imageNews.isEmpty()) {
+        holder.tvDate.setText((int) date);
+        if (imageUrl == null) {
             holder.ivNewsImage.setImageResource(R.mipmap.ic_launcher);
         } else {
-            Picasso.get().load(imageNews).into(holder.ivNewsImage);
+            Picasso.get().load(String.valueOf(imageUrl)).into(holder.ivNewsImage);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (mNewsItem == null) {
+        if (mCursor == null) {
             return 0;
         } else {
-            return mNewsItem.size();
+            return mCursor.getCount();
         }
     }
 
@@ -91,8 +93,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         public void onClick(View v) {
 
             int adapterposition = getAdapterPosition();
-            NewsItem news = mNewsItem.get(adapterposition);
-            onClickHandler.onItemClick(news);
+            mCursor.moveToPosition(adapterposition);
+            long idDate = mCursor.getLong(MainActivity.INDEX_NEWS_DATE);
+            mOnclickListnrer.onClick(idDate);
         }
     }
 }
