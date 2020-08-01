@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
+import com.example.newsapp.Data.NewsLocationPrefrences;
 import com.example.newsapp.R;
 
 import java.io.IOException;

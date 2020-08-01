@@ -15,18 +15,30 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".SettingsActivity" android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".DetailActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
 
         <provider
             android:name=".Data.NewsProvider"
             android:authorities="com.example.newsapp"
             android:exported="false" />
+
+        <!-- normal background intent service -->
+        <service
+            android:name=".sync.NewsSyncIntentService"
+            android:exported="false" />
+
+        <!-- firebase job dispatcher -->
+        <service
+            android:name=".sync.NewsFirebaseJobService"
+            android:exported="false"/>
 
     </application>
 

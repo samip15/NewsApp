@@ -187,7 +187,7 @@ public class JsonNews {
             ContentValues newsValues = new ContentValues();
             newsValues.put(NewsContract.NewsEntry.COLUMN_DATE, originalDate);
             newsValues.put(NewsContract.NewsEntry.COLUMN_TITLE, originalTitle);
-            newsValues.put(NewsContract.NewsEntry.COLUMN_description, originalDes);
+            newsValues.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, originalDes);
             newsValues.put(NewsContract.NewsEntry.COLUMN_IMAGE_URL, Imgurl);
             newsContentValues[i] = newsValues;
         }

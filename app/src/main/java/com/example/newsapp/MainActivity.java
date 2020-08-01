@@ -22,16 +22,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.newsapp.Data.NewsContract;
-import com.example.newsapp.Model.NewsItem;
+import com.example.newsapp.sync.NewsSyncUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner, SharedPreferences.OnSharedPreferenceChangeListener {
-    private int mPosition = RecyclerView.NO_POSITION;
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner, SharedPreferences.OnSharedPreferenceChangeListener {
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
     private TextView mErrorMessageDisplay;
@@ -47,7 +42,7 @@ public abstract class MainActivity extends AppCompatActivity implements LoaderMa
     public static final String[] MAIN_NEWS_PROJECTION = {
             NewsContract.NewsEntry.COLUMN_DATE,
             NewsContract.NewsEntry.COLUMN_TITLE,
-            NewsContract.NewsEntry.COLUMN_description,
+            NewsContract.NewsEntry.COLUMN_DESCRIPTION,
             NewsContract.NewsEntry.COLUMN_IMAGE_URL,
     };
     // weather table ko column ko indexes
@@ -69,12 +64,15 @@ public abstract class MainActivity extends AppCompatActivity implements LoaderMa
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecycler.setLayoutManager(linearLayout);
         mRecycler.setHasFixedSize(true);
-        List<NewsItem> news = new ArrayList<>();
         //adapter
         myNewsAdapter = new NewsAdapter(this, this);
         mRecycler.setAdapter(myNewsAdapter);
         /* Initializing loader For The First Time */
         getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
+
+        // get the data from our service
+        NewsSyncUtils.initialized(this);
+
         // resister preference
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
@@ -154,9 +152,7 @@ public abstract class MainActivity extends AppCompatActivity implements LoaderMa
         mShimmerViewContainer.setVisibility(View.INVISIBLE);
 
         myNewsAdapter.swapCursor(newsData);
-        if (mPosition == RecyclerView.NO_POSITION) {
-            mPosition = 0;
-        }
+
         if (newsData.getCount() != 0) {
             showNewsDataView();
         }

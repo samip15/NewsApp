@@ -21,7 +21,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 NewsContract.NewsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NewsContract.NewsEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                 NewsContract.NewsEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                NewsContract.NewsEntry.COLUMN_description + " TEXT NOT NULL, " +
+                NewsContract.NewsEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 NewsContract.NewsEntry.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
                 //  unique helps to replace same entry of same date so that new value can be inserted while refreshing
                 " UNIQUE (" + NewsContract.NewsEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";

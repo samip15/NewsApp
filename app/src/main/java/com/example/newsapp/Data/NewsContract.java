@@ -25,7 +25,7 @@ public class NewsContract {
         // news columns
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_TITLE = "title";
-        public static final String COLUMN_description = "description";
+        public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_IMAGE_URL = "imageUrl";
     }
 }
