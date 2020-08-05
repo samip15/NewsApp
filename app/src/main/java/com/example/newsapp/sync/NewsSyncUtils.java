@@ -30,7 +30,7 @@ public class NewsSyncUtils {
     private static final String NEWS_SYNC_TAG = "news-sync";
 
     static void scheduleFirebaseJobDispatcher(@NonNull final Context context) {
-        Log.e(TAG, "weather is syncing");
+        Log.e(TAG, "news is syncing");
         // initializing
         Driver driver = new GooglePlayDriver(context);
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);
@@ -78,8 +78,8 @@ public class NewsSyncUtils {
                         null);
                 // check cursor for validation
                 if (cursor == null || cursor.getCount() == 0) {
-                    Log.e(TAG,"weathe is syncing");
-                    // immediately sync the weather data
+                    Log.e(TAG,"news is syncing");
+                    // immediately sync the News data
                     startImmediatelySync(context);
                 }
                 cursor.close();

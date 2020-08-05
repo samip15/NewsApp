@@ -44,7 +44,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @NonNull
     @Override
     public NewsAdapter.NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.news_item, parent, false);
+        view.setFocusable(true);
         return new NewsViewHolder(view);
     }
 
@@ -52,17 +53,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         // getting all columns values
-        long date = mCursor.getLong(MainActivity.INDEX_NEWS_DATE);
-        String title = String.valueOf(mCursor.getLong(MainActivity.INDEX_NEWS_TITLE));
-        String description = String.valueOf(mCursor.getLong(MainActivity.INDEX_NEWS_DESC));
-        byte[] imageUrl = mCursor.getBlob(MainActivity.INDEX_NEWS_IMAGE_URL);
+        String date = mCursor.getString(MainActivity.INDEX_NEWS_DATE);
+        String title =
+                mCursor.getString(MainActivity.INDEX_NEWS_TITLE);
+        String description = mCursor.getString(MainActivity.INDEX_NEWS_DESC);
+        String imageUrl = mCursor.getString(MainActivity.INDEX_NEWS_IMAGE_URL);
         holder.titleTextView.setText(title);
         holder.tvDescription.setText(description);
-        holder.tvDate.setText((int) date);
+        holder.tvDate.setText(date);
         if (imageUrl == null) {
             holder.ivNewsImage.setImageResource(R.mipmap.ic_launcher);
         } else {
-            Picasso.get().load(String.valueOf(imageUrl)).into(holder.ivNewsImage);
+            Picasso.get().load(imageUrl).into(holder.ivNewsImage);
         }
 
     }

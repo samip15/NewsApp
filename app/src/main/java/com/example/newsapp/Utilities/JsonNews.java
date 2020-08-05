@@ -14,16 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonNews {
+
+    private static final String NEWS_MESSAGE_CODE = "status";
+    private static final String NEWS_DESCRIPTION = "description";
+    private static final String NEWS_DATE = "publishedAt";
+    private static final String NEWS_TITLE = "title";
+    private static final String NEWS_IMAGE_URL = "urlToImage";
+    private static final String NEWS_ARTICLE = "articles";
+    private static final String NEWS_SOURCES = "source";
+    private static final String NEWS_SOURCE_NAME = "name";
+    private static final String NEWS_AUTHOR = "author";
+
+
     public static List<NewsItem> getNewsDataFromJson(Context context, String jsonNewsResponse) throws JSONException {
-        final String NEWS_MESSAGE_CODE = "status";
-        final String NEWS_DESCRIPTION = "description";
-        final String NEWS_DATE = "publishedAt";
-        final String NEWS_TITLE = "title";
-        final String NEWS_IMAGE_URL = "urlToImage";
-        final String NEWS_ARTICLE = "articles";
-        final String NEWS_SOURCES = "source";
-        final String NEWS_SOURCE_NAME = "name";
-        final String NEWS_AUTHOR = "author";
+
 
         List<NewsItem> listItemArrayList = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(jsonNewsResponse);
@@ -110,21 +114,11 @@ public class JsonNews {
      * @throws JSONException
      */
 
-    public static ContentValues[] getNewsContentValuesFromJson(Context context, String jsonNewsResponse) throws JSONException {
-        final String NEWS_MESSAGE_CODE = "status";
-        final String NEWS_DESCRIPTION = "description";
-        final String NEWS_DATE = "publishedAt";
-        final String NEWS_TITLE = "title";
-        final String NEWS_IMAGE_URL = "urlToImage";
-        final String NEWS_ARTICLE = "articles";
-        final String NEWS_SOURCES = "source";
-        final String NEWS_SOURCE_NAME = "name";
-        final String NEWS_AUTHOR = "author";
 
-        List<NewsItem> listItemArrayList = new ArrayList<>();
-        JSONObject jsonObject = new JSONObject(jsonNewsResponse);
-        if (jsonObject.has(NEWS_MESSAGE_CODE)) {
-            String errorCode = jsonObject.getString(NEWS_MESSAGE_CODE);
+    public static ContentValues[] getNewsContentValuesFromJson(Context context, String jsonNewsResponse) throws JSONException {
+        JSONObject newsJson = new JSONObject(jsonNewsResponse);
+        if (newsJson.has(NEWS_MESSAGE_CODE)) {
+            String errorCode = newsJson.getString(NEWS_MESSAGE_CODE);
             switch (errorCode) {
                 case "ok":
                     break;
@@ -137,10 +131,12 @@ public class JsonNews {
             }
         }
 
-        JSONArray NewsArray = jsonObject.getJSONArray(NEWS_ARTICLE);
-        ContentValues[] newsContentValues = new ContentValues[NewsArray.length()];
-        for (int i = 0; i < NewsArray.length(); i++) {
-            JSONObject newsobj = NewsArray.getJSONObject(i);
+        JSONArray newsArray = newsJson.getJSONArray(NEWS_ARTICLE);
+        ContentValues[] newsContentValues = new ContentValues[newsArray.length()];
+
+
+        for (int i = 0; i < newsArray.length(); i++) {
+            JSONObject newsobj = newsArray.getJSONObject(i);
             JSONObject newSourcesObj = null;
             String originalSources = null;
             if (newsobj.has(NEWS_SOURCES)) {
@@ -178,17 +174,21 @@ public class JsonNews {
                 originalDate = newsobj.getString(NEWS_DATE);
             }
 
-            String Imgurl = null;
+            String imgurl = null;
             if (newsobj.has(NEWS_IMAGE_URL)) {
                 // Extract the value for the key called "original_image url"
-                Imgurl = newsobj.getString(NEWS_IMAGE_URL);
+                imgurl = newsobj.getString(NEWS_IMAGE_URL);
             }
 
+
+            // Create a new {@link News} object
             ContentValues newsValues = new ContentValues();
             newsValues.put(NewsContract.NewsEntry.COLUMN_DATE, originalDate);
             newsValues.put(NewsContract.NewsEntry.COLUMN_TITLE, originalTitle);
             newsValues.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, originalDes);
-            newsValues.put(NewsContract.NewsEntry.COLUMN_IMAGE_URL, Imgurl);
+            newsValues.put(NewsContract.NewsEntry.COLUMN_IMAGE_URL, imgurl);
+            newsValues.put(NewsContract.NewsEntry.COLUMN_SOURCE, originalSources);
+            newsValues.put(NewsContract.NewsEntry.COLUMN_AUTHOR, originalAuthor);
             newsContentValues[i] = newsValues;
         }
 

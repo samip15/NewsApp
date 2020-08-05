@@ -32,16 +32,6 @@ public class NewsSyncTask {
             String jsonWeatherResponce = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
             // parse
             ContentValues[] newsValue = JsonNews.getNewsContentValuesFromJson(context, jsonWeatherResponce);
-
-            String newsSearch = NewsLocationPrefrences.getPreferedNewsSearch(context);
-            URL newsRequestUrl2 = NetworkUtils.buildUrl_topHeadline(newsSearch);
-
-            // responce
-            String jsonNewsResponce2 = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl2);
-            // parse
-            ContentValues[] newsValue2 = JsonNews.getNewsContentValuesFromJson(context, jsonNewsResponce2);
-
-
             // assign to provider
             if (newsValue != null && newsValue.length != 0) {
                 // add to content provider
@@ -52,19 +42,8 @@ public class NewsSyncTask {
                 resolver.bulkInsert(NewsContract.NewsEntry.CONTENT_URI, newsValue);
             }
 
-            // assign to provider
-            if (newsValue2 != null && newsValue2.length != 0) {
-                // add to content provider
-                ContentResolver resolver = context.getContentResolver();
-                // delete old data and add new one
-                resolver.delete(NewsContract.NewsEntry.CONTENT_URI, null, null);
-                // new data
-                resolver.bulkInsert(NewsContract.NewsEntry.CONTENT_URI, newsValue2);
-            }
 
-        } catch (JSONException e) {
-            e.fillInStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

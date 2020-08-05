@@ -16,8 +16,13 @@ public class NewsContract {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTES).build();
 
-        public static Uri buildNewsUriWithDate(long date){
-            return CONTENT_URI.buildUpon().appendPath(Long.toString(date)).build();
+        public static Uri buildNewsUriWithDate(long id){
+            return CONTENT_URI.buildUpon().appendPath(Long.toString(id)).build();
+        }
+
+        public static String getSqlSelectForId()
+        {
+            return NewsEntry.COLUMN_DATE;
         }
 
         // table name
@@ -27,5 +32,9 @@ public class NewsContract {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_IMAGE_URL = "imageUrl";
+        public static final String COLUMN_SOURCE = "name";
+        public static final String COLUMN_AUTHOR = "author";
+
     }
+
 }

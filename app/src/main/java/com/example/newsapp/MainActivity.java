@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      *  ----------------------  Recyclerview OnClick --------------------------
      * */
     @Override
-    public void onClick(long idDate) {
+    public void onClick(long id) {
         Intent intent = new Intent(mContext, DetailActivity.class);
         // uri
-        Uri uriforDetail = NewsContract.NewsEntry.buildNewsUriWithDate(idDate);
+        Uri uriforDetail = NewsContract.NewsEntry.buildNewsUriWithDate(id);
         intent.setData(uriforDetail);
         startActivity(intent);
     }
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 case NEWS_LOADER_ID:
                     //uri
                     Uri forecastQueryUri = NewsContract.NewsEntry.CONTENT_URI;
-                    String sortOrder = NewsContract.NewsEntry.COLUMN_DATE + " ASC";
+                    String sortOrder = NewsContract.NewsEntry._ID + " ASC";
                     return new CursorLoader(this,
                             forecastQueryUri,
                             MAIN_NEWS_PROJECTION,

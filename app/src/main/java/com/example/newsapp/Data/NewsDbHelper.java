@@ -22,9 +22,9 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 NewsContract.NewsEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                 NewsContract.NewsEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 NewsContract.NewsEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                NewsContract.NewsEntry.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
-                //  unique helps to replace same entry of same date so that new value can be inserted while refreshing
-                " UNIQUE (" + NewsContract.NewsEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
+                NewsContract.NewsEntry.COLUMN_IMAGE_URL + " TEXT NOT NULL," +
+                NewsContract.NewsEntry.COLUMN_SOURCE + " TEXT NOT NULL, " +
+                NewsContract.NewsEntry.COLUMN_AUTHOR + " TEXT NOT NULL )";
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
 
     }

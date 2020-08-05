@@ -12,9 +12,8 @@
         android:roundIcon="@mipmap/appincon990"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".SettingsActivity" android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".DetailActivity" />
+        android:usesCleartextTraffic="true"
+        android:fullBackupContent="true">
         <activity
             android:name=".MainActivity">
 
@@ -24,6 +23,10 @@
             </intent-filter>
 
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".DetailActivity" />
 
         <provider
             android:name=".Data.NewsProvider"
@@ -38,7 +41,11 @@
         <!-- firebase job dispatcher -->
         <service
             android:name=".sync.NewsFirebaseJobService"
-            android:exported="false"/>
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
 
     </application>
 

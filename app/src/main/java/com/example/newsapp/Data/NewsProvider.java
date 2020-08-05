@@ -57,10 +57,20 @@ public class NewsProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+
+            case CODE_NEWS_WITH_ID:
+                retCursor = db.query(NewsContract.NewsEntry.TABLE_NAME,
+                        projection,
+                        NewsContract.NewsEntry.COLUMN_DATE+" = ?",
+                        new String[]{uri.getLastPathSegment()},
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
-                throw new UnsupportedOperationException("Unknown URI"+uri);
+                throw new UnsupportedOperationException("Unknown URI" + uri);
         }
-        retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
 
@@ -78,13 +88,11 @@ public class NewsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public int bulkInsert(@NonNull Uri uri, @Nullable ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         // database access
         final SQLiteDatabase db = newsDBHelper.getWritableDatabase();
         // match anusar cursor ra data pathuxa
         int match = sUriMatcher.match(uri);
-        // Uri Return Garne
-        Uri returnUri;
         switch (match) {
             case CODE_NEWS:
                 db.beginTransaction();
@@ -106,6 +114,7 @@ public class NewsProvider extends ContentProvider {
                 if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
+                return rowsInserted;
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -118,22 +127,24 @@ public class NewsProvider extends ContentProvider {
         // match anusar cursor ra data pathuxa
         int match = sUriMatcher.match(uri);
         // delete int
-        int noteDeleted;
+        int newsDeleted;
+        if (selection == null) {
+            selection = "1";
+        }
         switch (match) {
-            case CODE_NEWS_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                noteDeleted = db.delete(NewsContract.NewsEntry.TABLE_NAME,"_id=?",new String[]{id});
+            case CODE_NEWS:
+                newsDeleted = db.delete(NewsContract.NewsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
         // notify content resolver about new data insertion
-        if (noteDeleted!=0){
+        if (newsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
 
         }
 
-        return noteDeleted;
+        return newsDeleted;
     }
 
     @Override
