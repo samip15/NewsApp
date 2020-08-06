@@ -96,7 +96,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
             int adapterposition = getAdapterPosition();
             mCursor.moveToPosition(adapterposition);
-            long idDate = mCursor.getLong(MainActivity.INDEX_NEWS_DATE);
+            long idDate = mCursor.getLong(MainActivity.INDEX_NEWS_ID);
             mOnclickListnrer.onClick(idDate);
         }
     }

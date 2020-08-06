@@ -61,7 +61,7 @@ public class NewsProvider extends ContentProvider {
             case CODE_NEWS_WITH_ID:
                 retCursor = db.query(NewsContract.NewsEntry.TABLE_NAME,
                         projection,
-                        NewsContract.NewsEntry.COLUMN_DATE+" = ?",
+                        NewsContract.NewsEntry._ID+" = ?",
                         new String[]{uri.getLastPathSegment()},
                         null,
                         null,

@@ -30,7 +30,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
 
 
-    private static final int NEWS_LOADER_ID = 1;
+    private static final int NEWS_LOADER_ID = 10;
     Context mContext = DetailActivity.this;
 
     public static final String EXTRA_NEWS = "news";
@@ -103,15 +103,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         switch (loaderId) {
             case NEWS_LOADER_ID:
                 //uri
-                Uri forecastQueryUri = NewsContract.NewsEntry.CONTENT_URI;
-                String sortOrder = NewsContract.NewsEntry.COLUMN_DATE + " ASC";
-                String selection = NewsContract.NewsEntry.getSqlSelectForId();
                 return new CursorLoader(this,
-                        forecastQueryUri,
+                        mUri,
                         MAIN_NEWS_PROJECTION,
-                        selection,
+                       null,
                         null,
-                        sortOrder);
+                        null);
             default:
                 throw new RuntimeException("Loader Not Implemented" + loaderId);
         }
@@ -142,7 +139,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         // Sources
         String sources = data.getString(INDEX_NEWS_SOURCE);
-        mSources.setText(sources);
+        mSources.setText(sources+" :");
 
         String imageUrl = data.getString(INDEX_NEWS_IMAGE_URL);
         Picasso.get().load(imageUrl).into(detailImage);

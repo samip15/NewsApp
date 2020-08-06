@@ -16,14 +16,10 @@ public class NewsContract {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_NOTES).build();
 
-        public static Uri buildNewsUriWithDate(long id){
+        public static Uri buildNewsUriWithId(long id){
             return CONTENT_URI.buildUpon().appendPath(Long.toString(id)).build();
         }
 
-        public static String getSqlSelectForId()
-        {
-            return NewsEntry.COLUMN_DATE;
-        }
 
         // table name
         public static final String TABLE_NAME = "news";

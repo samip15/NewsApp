@@ -22,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.newsapp.Data.NewsContract;
 import com.example.newsapp.sync.NewsSyncUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -44,12 +46,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             NewsContract.NewsEntry.COLUMN_TITLE,
             NewsContract.NewsEntry.COLUMN_DESCRIPTION,
             NewsContract.NewsEntry.COLUMN_IMAGE_URL,
+            NewsContract.NewsEntry._ID
     };
     // weather table ko column ko indexes
     public static final int INDEX_NEWS_DATE = 0;
     public static final int INDEX_NEWS_TITLE = 1;
     public static final int INDEX_NEWS_DESC = 2;
     public static final int INDEX_NEWS_IMAGE_URL = 3;
+    public static final int INDEX_NEWS_ID = 4;
 
 
     @Override
@@ -67,11 +71,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //adapter
         myNewsAdapter = new NewsAdapter(this, this);
         mRecycler.setAdapter(myNewsAdapter);
-        /* Initializing loader For The First Time */
-        getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
 
-        // get the data from our service
-        NewsSyncUtils.initialized(this);
+        if (isOnline()){
+
+            /* Initializing loader For The First Time */
+            getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
+
+            // get the data from our service
+            NewsSyncUtils.initialized(this);
+
+        }else{
+            showErrorMessage();
+            mShimmerViewContainer.setVisibility(View.INVISIBLE);
+        }
 
         // resister preference
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
@@ -85,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onClick(long id) {
         Intent intent = new Intent(mContext, DetailActivity.class);
         // uri
-        Uri uriforDetail = NewsContract.NewsEntry.buildNewsUriWithDate(id);
+        Uri uriforDetail = NewsContract.NewsEntry.buildNewsUriWithId(id);
         intent.setData(uriforDetail);
         startActivity(intent);
     }

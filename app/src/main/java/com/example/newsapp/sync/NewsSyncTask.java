@@ -3,16 +3,10 @@ package com.example.newsapp.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.text.format.DateUtils;
-
 import com.example.newsapp.Data.NewsContract;
 import com.example.newsapp.Data.NewsLocationPrefrences;
 import com.example.newsapp.Utilities.JsonNews;
 import com.example.newsapp.Utilities.NetworkUtils;
-
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.net.URL;
 
 public class NewsSyncTask {
