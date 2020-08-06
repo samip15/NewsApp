@@ -54,13 +54,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         mCursor.moveToPosition(position);
         // getting all columns values
         String date = mCursor.getString(MainActivity.INDEX_NEWS_DATE);
+        String[] dateTime = date.split("T");
+        String convertedDT = dateTime[0] + " " + dateTime[1].replace("Z","");
         String title =
                 mCursor.getString(MainActivity.INDEX_NEWS_TITLE);
         String description = mCursor.getString(MainActivity.INDEX_NEWS_DESC);
         String imageUrl = mCursor.getString(MainActivity.INDEX_NEWS_IMAGE_URL);
         holder.titleTextView.setText(title);
         holder.tvDescription.setText(description);
-        holder.tvDate.setText(date);
+        holder.tvDate.setText(convertedDT);
         if (imageUrl == null) {
             holder.ivNewsImage.setImageResource(R.mipmap.ic_launcher);
         } else {
