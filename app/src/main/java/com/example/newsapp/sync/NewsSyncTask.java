@@ -17,7 +17,7 @@ public class NewsSyncTask {
      *
      * @param context
      */
-    synchronized public static void syncWeather(Context context) {
+    synchronized public static void syncNews(Context context) {
         try {
             String newslocation = NewsLocationPrefrences.getPreferedNewsLocation(context);
             URL newsRequestUrl = NetworkUtils.buildUrl_topHeadline(newslocation);
@@ -41,5 +41,6 @@ public class NewsSyncTask {
             e.printStackTrace();
         }
 
+    
     }
 }

@@ -19,7 +19,7 @@ public class NewsFirebaseJobService extends JobService {
         mFetchWeatherTask = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                NewsSyncTask.syncWeather(getApplicationContext());
+                NewsSyncTask.syncNews(getApplicationContext());
                 return null;
             }
 

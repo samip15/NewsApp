@@ -19,6 +19,6 @@ public class NewsSyncIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.e(TAG,"News is syncing");
-        NewsSyncTask.syncWeather(this);
+        NewsSyncTask.syncNews(this);
     }
 }
