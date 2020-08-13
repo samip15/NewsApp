@@ -20,7 +20,7 @@ public class NewsSyncTask {
     synchronized public static void syncNews(Context context) {
         try {
             String newslocation = NewsLocationPrefrences.getPreferedNewsLocation(context);
-            URL newsRequestUrl = NetworkUtils.buildUrl_topHeadline(newslocation);
+            URL newsRequestUrl = NetworkUtils.buildUrlTopHeadline(newslocation);
 
             // responce
             String jsonWeatherResponce = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);

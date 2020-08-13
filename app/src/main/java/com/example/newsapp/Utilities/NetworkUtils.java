@@ -34,7 +34,7 @@ public class NetworkUtils {
      * @param countryname:Country Name
      * @return: returns url
      */
-    public static URL buildUrl_topHeadline(String countryname) {
+    public static URL buildUrlTopHeadline(String countryname) {
         Uri builduri_top_headline = Uri.parse(BASE_NEWS_URL_top_headline).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, countryname)
                 .appendQueryParameter(APPID_PARAM, appid)
