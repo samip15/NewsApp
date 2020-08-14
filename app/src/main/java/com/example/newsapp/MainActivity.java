@@ -28,7 +28,7 @@ import com.example.newsapp.Data.NewsContract;
 import com.example.newsapp.sync.NewsSyncUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner {
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
     private TextView mErrorMessageDisplay;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         // resister preference
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+       // PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
 
@@ -233,33 +233,33 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    /**
-     * If Prefrence Is Changed
-     *
-     * @param sharedPreferences:Pref to save data
-     * @param key:key                to identify
-     */
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        PREFRENCE_UPDATED = true;
-
-    }
-
-    /*---------------------------- lifecycle methods------------------ */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (PREFRENCE_UPDATED) {
-            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
-            PREFRENCE_UPDATED = false;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-    }
+//    /**
+//     * If Prefrence Is Changed
+//     *
+//     * @param sharedPreferences:Pref to save data
+//     * @param key:key                to identify
+//     */
+//    @Override
+//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//        PREFRENCE_UPDATED = true;
+//
+//    }
+//
+//    /*---------------------------- lifecycle methods------------------ */
+//    @Override
+//    protected void onStart() {
+////        super.onStart();
+////        if (PREFRENCE_UPDATED) {
+////            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
+////            PREFRENCE_UPDATED = false;
+////        }
+////    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+//    }
 
 
 }

@@ -19,6 +19,13 @@ public class NewsSyncIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.e(TAG,"News is syncing");
-        NewsSyncTask.syncNews(this);
+       boolean isSearch = intent.getBooleanExtra("isSearchQuery",false);
+       if(isSearch)
+       {
+           NewsSyncTask.syncEverythingNews(this);
+       }
+       else{
+           NewsSyncTask.syncNews(this);
+       }
     }
 }
