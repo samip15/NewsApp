@@ -9,6 +9,7 @@ import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,7 @@ import com.example.newsapp.Data.NewsContract;
 import com.example.newsapp.sync.NewsSyncUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,NewsAdapter.NewsAdapterOnclickListner {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, NewsAdapter.NewsAdapterOnclickListner {
     RecyclerView mRecycler;
     NewsAdapter myNewsAdapter;
     private TextView mErrorMessageDisplay;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // if shared preference has been changed
     private static boolean PREFRENCE_UPDATED = false;
     private static final String TAG = "MainActivity";
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // if shared preference has been changed
     // weather columns that are displayed and queried
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecycler = findViewById(R.id.recycler_view);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
+
         //set rv
         LinearLayoutManager linearLayout = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecycler.setLayoutManager(linearLayout);
@@ -72,7 +77,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         myNewsAdapter = new NewsAdapter(this, this);
         mRecycler.setAdapter(myNewsAdapter);
 
-        if (isOnline()){
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, MainActivity.this);
+                mSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+
+        if (isOnline()) {
 
             /* Initializing loader For The First Time */
             getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
@@ -80,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // get the data from our service
             NewsSyncUtils.initialized(this);
 
-        }else{
+        } else {
             showErrorMessage();
             mShimmerViewContainer.setVisibility(View.INVISIBLE);
         }
 
         // resister preference
-       // PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        // PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
 
@@ -133,29 +147,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, @Nullable Bundle args) {
 
-            mShimmerViewContainer.setVisibility(View.VISIBLE);
-            mShimmerViewContainer.startShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.startShimmerAnimation();
 
-            switch (loaderId) {
-                case NEWS_LOADER_ID:
-                    //uri
-                    Uri forecastQueryUri = NewsContract.NewsEntry.CONTENT_URI;
-                    String sortOrder = NewsContract.NewsEntry._ID + " ASC";
-                    return new CursorLoader(this,
-                            forecastQueryUri,
-                            MAIN_NEWS_PROJECTION,
-                            null,
-                            null,
-                            sortOrder);
-                default:
-                    throw new RuntimeException("Loader Not Implemented" + loaderId);
-            }
+        switch (loaderId) {
+            case NEWS_LOADER_ID:
+                //uri
+                Uri forecastQueryUri = NewsContract.NewsEntry.CONTENT_URI;
+                String sortOrder = NewsContract.NewsEntry._ID + " ASC";
+                return new CursorLoader(this,
+                        forecastQueryUri,
+                        MAIN_NEWS_PROJECTION,
+                        null,
+                        null,
+                        sortOrder);
+            default:
+                throw new RuntimeException("Loader Not Implemented" + loaderId);
         }
+    }
 
 
     /**
      * This Method Is Invoked When Load In Background Is Finished
-     *
      */
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor newsData) {
@@ -260,6 +273,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        super.onDestroy();
 //        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
 //    }
-
 
 }
