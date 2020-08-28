@@ -46,5 +46,11 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // material design
     implementation 'com.google.android.material:material:1.1.0'
+    //Network
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+
+    //Times Formater
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
 }

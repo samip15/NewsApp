@@ -5,4 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <!-- simmer background -  - -->
     <color name="background">#dddddd</color>
+    <color name="colorBackground">#f9f9fa</color>
+    <color name="colorTextSubtitle">#4e4e4e</color>
+    <color name="colorTextTitle">#262626</color>
 </resources>
