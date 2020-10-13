@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // if shared preference has been changed
-    // weather columns that are displayed and queried
+    // News columns that are displayed and queried
     public static final String[] MAIN_NEWS_PROJECTION = {
             NewsContract.NewsEntry.COLUMN_DATE,
             NewsContract.NewsEntry.COLUMN_TITLE,
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             NewsContract.NewsEntry.COLUMN_IMAGE_URL,
             NewsContract.NewsEntry._ID
     };
-    // weather table ko column ko indexes
+    // News table ko column ko indexes
     public static final int INDEX_NEWS_DATE = 0;
     public static final int INDEX_NEWS_TITLE = 1;
     public static final int INDEX_NEWS_DESC = 2;
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
 //    /**
-//     * If Prefrence Is Changed
+//     * If Preference Is Changed
 //     *
 //     * @param sharedPreferences:Pref to save data
 //     * @param key:key                to identify

@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import com.example.newsapp.R;
 
-public class NewsLocationPrefrences {
+public class NewsLocationPreferences {
     private static final String DEFAULT_LOCATION_NEWS = "in";
     private static final String PREF_BOOL_SEARCH = "bool_search";
 

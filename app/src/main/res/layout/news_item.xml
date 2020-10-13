@@ -55,7 +55,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="sans-serif-light"
-                android:justificationMode="inter_word"
                 android:text="@string/title_news"
                 android:textColor="@color/colorTextTitle"
                 android:textSize="14sp"
@@ -73,7 +72,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="16dp"
-                android:justificationMode="inter_word"
                 android:text="@string/title_des" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

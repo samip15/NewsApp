@@ -1,15 +1,8 @@
 package com.example.newsapp.Utilities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
-
-import androidx.preference.PreferenceManager;
-
-import com.example.newsapp.Data.NewsLocationPrefrences;
-import com.example.newsapp.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,12 +24,12 @@ public class NetworkUtils {
     /**
      * Building Uri to Url
      *
-     * @param countryname:Country Name
+     * @param countryName:Country Name
      * @return: returns url
      */
-    public static URL buildUrlTopHeadline(String countryname) {
+    public static URL buildUrlTopHeadline(String countryName) {
         Uri builduri_top_headline = Uri.parse(BASE_NEWS_URL_top_headline).buildUpon()
-                .appendQueryParameter(QUERY_PARAM, countryname)
+                .appendQueryParameter(QUERY_PARAM, countryName)
                 .appendQueryParameter(APPID_PARAM, appid)
                 .build();
         URL url = null;
@@ -57,13 +50,13 @@ public class NetworkUtils {
      */
     @SuppressLint("LongLogTag")
     public static URL buildUrl_Everything(String search) {
-        Uri builduri_everything = Uri.parse(BASE_NEWS_URL_everything).buildUpon()
+        Uri buildUri_everything = Uri.parse(BASE_NEWS_URL_everything).buildUpon()
                 .appendQueryParameter(SEARCH_QUERY_PARAM, search)
                 .appendQueryParameter(APPID_PARAM, appid)
                 .build();
         URL url = null;
         try {
-            url = new URL(builduri_everything.toString());
+            url = new URL(buildUri_everything.toString());
             Log.e(TAG, "url is "+ url );
         } catch (MalformedURLException e) {
             e.printStackTrace();

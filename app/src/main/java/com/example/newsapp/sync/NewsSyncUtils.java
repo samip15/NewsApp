@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.example.newsapp.Data.NewsContract;
-import com.example.newsapp.Data.NewsLocationPrefrences;
+import com.example.newsapp.Data.NewsLocationPreferences;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -96,7 +96,7 @@ public class NewsSyncUtils {
      */
     public static void startImmediatelySync(@NonNull final Context context ) {
         Intent intentImmediately = new Intent(context, NewsSyncIntentService.class);
-        boolean isSearch = NewsLocationPrefrences.getPrefBoolSearch(context);
+        boolean isSearch = NewsLocationPreferences.getPrefBoolSearch(context);
         intentImmediately.putExtra("isSearchQuery",isSearch);
         context.startService(intentImmediately);
     }

@@ -20,6 +20,7 @@ public class NewsFirebaseJobService extends JobService {
             @Override
             protected Void doInBackground(Void... voids) {
                 NewsSyncTask.syncNews(getApplicationContext());
+                NewsSyncTask.syncEverythingNews(getApplicationContext());
                 return null;
             }
 

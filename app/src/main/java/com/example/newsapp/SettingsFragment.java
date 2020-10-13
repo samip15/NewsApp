@@ -10,7 +10,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.example.newsapp.Data.NewsLocationPrefrences;
+import com.example.newsapp.Data.NewsLocationPreferences;
 import com.example.newsapp.sync.NewsSyncUtils;
 
 import static com.example.newsapp.R.string.pref_sort_by_everything;
@@ -98,11 +98,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             String value = sharedPreferences.getString(p.getKey(), "");
             if (p instanceof ListPreference && !key.equals(getString(R.string.pref_country_key))) {
                 showSearchEditPreference(p, value);
-                NewsLocationPrefrences.setPrefBoolSearch(getActivity(),true);
+                NewsLocationPreferences.setPrefBoolSearch(getActivity(),true);
             }
             if (!(p instanceof EditTextPreference)) {
                 showCountryListPreference(p, value);
-                NewsLocationPrefrences.setPrefBoolSearch(getActivity(),false);
+                NewsLocationPreferences.setPrefBoolSearch(getActivity(),false);
             }
             NewsSyncUtils.startImmediatelySync(getActivity());
 

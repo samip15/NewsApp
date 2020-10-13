@@ -3,28 +3,30 @@ package com.example.newsapp.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+
 import com.example.newsapp.Data.NewsContract;
-import com.example.newsapp.Data.NewsLocationPrefrences;
+import com.example.newsapp.Data.NewsLocationPreferences;
 import com.example.newsapp.Utilities.JsonNews;
 import com.example.newsapp.Utilities.NetworkUtils;
+
 import java.net.URL;
 
 public class NewsSyncTask {
 
 
     /**
-     * Gets the weather from the network and passes it to the database / content provider
+     * Gets the news from the network and passes it to the database / content provider
      *
      * @param context
      */
     synchronized public static void syncNews(Context context) {
         try {
-            String newslocation = NewsLocationPrefrences.getPreferedNewsLocation(context);
-            URL newsRequestUrl = NetworkUtils.buildUrlTopHeadline(newslocation);
-            // responce
-            String jsonWeatherResponce = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
+            String newsLocation = NewsLocationPreferences.getPreferedNewsLocation(context);
+            URL newsRequestUrl = NetworkUtils.buildUrlTopHeadline(newsLocation);
+            // response
+            String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
             // parse
-            ContentValues[] newsValue = JsonNews.getNewsContentValuesFromJson(context, jsonWeatherResponce);
+            ContentValues[] newsValue = JsonNews.getNewsContentValuesFromJson(context, jsonWeatherResponse);
             // assign to provider
             if (newsValue != null && newsValue.length != 0) {
                 // add to content provider
@@ -40,17 +42,17 @@ public class NewsSyncTask {
             e.printStackTrace();
         }
 
-    
+
     }
 
     synchronized public static void syncEverythingNews(Context context) {
         try {
-            String newsSearch = NewsLocationPrefrences.getPreferedNewsSearch(context);
+            String newsSearch = NewsLocationPreferences.getPreferedNewsSearch(context);
             URL newsRequestUrl = NetworkUtils.buildUrl_Everything(newsSearch);
-            // responce
-            String jsonWeatherResponce = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
+            // response
+            String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(newsRequestUrl);
             // parse
-            ContentValues[] newsValue = JsonNews.getNewsContentValuesFromJson(context, jsonWeatherResponce);
+            ContentValues[] newsValue = JsonNews.getNewsContentValuesFromJson(context, jsonWeatherResponse);
             // assign to provider
             if (newsValue != null && newsValue.length != 0) {
                 // add to content provider
