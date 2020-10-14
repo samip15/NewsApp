@@ -9,7 +9,7 @@ import com.example.newsapp.R;
 
 public class NewsLocationPreferences {
     private static final String DEFAULT_LOCATION_NEWS = "in";
-    private static final String PREF_BOOL_SEARCH = "bool_search";
+    private static final String PREF_TYPE_SEARCH = "type_search";
 
     /**
      * This Method Stores Shared Preference Country Location
@@ -41,16 +41,16 @@ public class NewsLocationPreferences {
         return DEFAULT_LOCATION_NEWS;
     }
 
-    public static void setPrefBoolSearch(Context context, boolean searchBool) {
+    public static void setPrefTypeSearch(Context context, String searchType) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(PREF_BOOL_SEARCH, searchBool);
+        editor.putString(PREF_TYPE_SEARCH, searchType);
         editor.apply();
     }
 
-    public static boolean getPrefBoolSearch(Context context) {
+    public static String getPrefTypeSearch(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_BOOL_SEARCH, false);
+        return sp.getString(PREF_TYPE_SEARCH, "");
     }
 
 }

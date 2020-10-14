@@ -96,8 +96,8 @@ public class NewsSyncUtils {
      */
     public static void startImmediatelySync(@NonNull final Context context ) {
         Intent intentImmediately = new Intent(context, NewsSyncIntentService.class);
-        boolean isSearch = NewsLocationPreferences.getPrefBoolSearch(context);
-        intentImmediately.putExtra("isSearchQuery",isSearch);
+        String searchType = NewsLocationPreferences.getPrefTypeSearch(context);
+        intentImmediately.putExtra("searchType",searchType);
         context.startService(intentImmediately);
     }
 }

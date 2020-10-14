@@ -2,6 +2,7 @@ package com.example.newsapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
@@ -36,6 +37,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             showCountryListPreference(p, value);
             setPreferenceSummary(p, value);
         }
+        Preference checkP = preferenceScreen.getPreference(2);
+        String checkValue = sharedPreferences.getString(checkP.getKey(), "");
+        if (checkValue.equals(getString(pref_sort_by_everything))) {
+            listPreference.setVisible(false);
+            showSearchEditPreference(checkP, checkValue);
+            NewsLocationPreferences.setPrefTypeSearch(getActivity(), "everything");
+        } else {
+            listPreference.setVisible(true);
+            showCountryListPreference(checkP,checkValue);
+            NewsLocationPreferences.setPrefTypeSearch(getActivity(), "country");
+        }
+        NewsSyncUtils.startImmediatelySync(getActivity());
     }
 
     /**
@@ -65,6 +78,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         } else {
             listPreference.setVisible(true);
         }
+
     }
 
     /**
@@ -96,13 +110,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference p = findPreference(key);
         if (p != null) {
             String value = sharedPreferences.getString(p.getKey(), "");
-            if (p instanceof ListPreference && !key.equals(getString(R.string.pref_country_key))) {
-                showSearchEditPreference(p, value);
-                NewsLocationPreferences.setPrefBoolSearch(getActivity(),true);
-            }
-            if (!(p instanceof EditTextPreference)) {
-                showCountryListPreference(p, value);
-                NewsLocationPreferences.setPrefBoolSearch(getActivity(),false);
+            if (value.equals(getString(R.string.pref_sort_by_topheadline))) {
+                Log.e("settings","onSharedPreferenceChanged: "+value );
+                editTextPreference.setVisible(false);
+                listPreference.setVisible(true);
+                NewsLocationPreferences.setPrefTypeSearch(getActivity(), "country");
+            } else if(value.equals(getString(R.string.pref_sort_by_everything))) {
+                Log.e("settings","onSharedPreferenceChanged: "+key );
+                editTextPreference.setVisible(true);
+                listPreference.setVisible(false);
+                NewsLocationPreferences.setPrefTypeSearch(getActivity(), "everything");
             }
             NewsSyncUtils.startImmediatelySync(getActivity());
 
